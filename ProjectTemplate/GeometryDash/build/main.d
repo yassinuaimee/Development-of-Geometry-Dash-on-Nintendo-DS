@@ -1,5 +1,5 @@
 main.o:  \
- /home/nds/files/workspace/project-nds/ProjectTemplate/Template/source/main.c \
+ /home/nds/files/workspace/project-nds/ProjectTemplate/GeometryDash/source/main.c \
   /opt/devkitPro/libnds/include/nds.h \
   /opt/devkitPro/libnds/include/nds/libversion.h \
   /opt/devkitPro/libnds/include/nds/ndstypes.h \
@@ -48,7 +48,7 @@ main.o:  \
   /opt/devkitPro/libnds/include/nds/arm9/sprite.h \
   /opt/devkitPro/libnds/include/nds/system.h \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
-  /home/nds/files/workspace/project-nds/ProjectTemplate/Template/build/ResRedBG.h
+  /home/nds/files/workspace/project-nds/ProjectTemplate/GeometryDash/build/ResRedBG.h
 
 /opt/devkitPro/libnds/include/nds.h:
 
@@ -146,4 +146,4 @@ main.o:  \
 
 /opt/devkitPro/libnds/include/nds/arm9/decompress.h:
 
-/home/nds/files/workspace/project-nds/ProjectTemplate/Template/build/ResRedBG.h:
+/home/nds/files/workspace/project-nds/ProjectTemplate/GeometryDash/build/ResRedBG.h:
