@@ -9,7 +9,7 @@
 @	+ regular map (flat), not compressed, 32x24 
 @	Total size: 506 + 7232 + 1536 = 9274
 @
-@	Time-stamp: 2022-12-05, 19:44:47
+@	Time-stamp: 2022-12-19, 13:41:26
 @	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 @	( http://www.coranac.com/projects/#grit )
 @
