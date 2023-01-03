@@ -80,7 +80,7 @@ void P_Map16x16_configureBG0()
 	 */
 
 	//Configure BG 0 to represent the game field
-	BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(25) | BG_TILE_BASE(4);
+	BGCTRL[0] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(1) | BG_TILE_BASE(4);
 
 	//Copy the empty tile and the full tile to the corresponding RAM location
 	//according to the chosen TILE_BASE. If dmaCopy is used, do not forget to
@@ -95,7 +95,7 @@ void P_Map16x16_configureBG0()
 
 	//Set the pointer mapMemory to the RAM location of the chosen MAP_BASE
 	//Hint: use the macro BG_MAP_RAM
-	mapMemory = (u16*)BG_MAP_RAM(25);
+	mapMemory = (u16*)BG_MAP_RAM(1);
 }
 
 void P_Map16x16_configureBG3()
@@ -117,11 +117,11 @@ void P_Map16x16_configureBG3()
 	 */
 
 	//Configure BG 3 for the background image as explained before
-	BGCTRL[3] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(26) | BG_TILE_BASE(0);
+	BGCTRL[3] = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(0) | BG_TILE_BASE(1);
 
 	//Copy tiles, map and palette in the memory (use swicopy or memcpy)
-	swiCopy(backgroundTiles, BG_TILE_RAM(0), backgroundTilesLen);
-	swiCopy(backgroundMap, BG_MAP_RAM(26), backgroundMapLen);
+	swiCopy(backgroundTiles, BG_TILE_RAM(1), backgroundTilesLen);
+	swiCopy(backgroundMap, BG_MAP_RAM(0), backgroundMapLen);
 	swiCopy(backgroundPal, BG_PALETTE, backgroundPalLen);
 
 }

@@ -1,0 +1,1 @@
+luggi.o: luggi.s

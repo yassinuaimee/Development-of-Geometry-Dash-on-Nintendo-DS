@@ -1,0 +1,1 @@
+arrow.o: arrow.s

@@ -1,6 +1,6 @@
 P_Map16x16.o:  \
- /home/nds/files/workspace/week10/Sound_solution/Tetris5/source/P_Map16x16.c \
-  /home/nds/files/workspace/week10/Sound_solution/Tetris5/source/P_Map16x16.h \
+ /home/nds/files/workspace/project-nds/ProjectTemplate/Tetris5/source/P_Map16x16.c \
+  /home/nds/files/workspace/project-nds/ProjectTemplate/Tetris5/source/P_Map16x16.h \
   /opt/devkitPro/libnds/include/nds.h \
   /opt/devkitPro/libnds/include/nds/libversion.h \
   /opt/devkitPro/libnds/include/nds/ndstypes.h \
@@ -49,11 +49,11 @@ P_Map16x16.o:  \
   /opt/devkitPro/libnds/include/nds/arm9/sprite.h \
   /opt/devkitPro/libnds/include/nds/system.h \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
-  /home/nds/files/workspace/week10/Sound_solution/Tetris5/source/P_Graphics.h \
-  /home/nds/files/workspace/week10/Sound_solution/Tetris5/build/controls.h \
-  /home/nds/files/workspace/week10/Sound_solution/Tetris5/build/background.h
+  /home/nds/files/workspace/project-nds/ProjectTemplate/Tetris5/source/P_Graphics.h \
+  /home/nds/files/workspace/project-nds/ProjectTemplate/Tetris5/build/controls.h \
+  /home/nds/files/workspace/project-nds/ProjectTemplate/Tetris5/build/background.h
 
-/home/nds/files/workspace/week10/Sound_solution/Tetris5/source/P_Map16x16.h:
+/home/nds/files/workspace/project-nds/ProjectTemplate/Tetris5/source/P_Map16x16.h:
 
 /opt/devkitPro/libnds/include/nds.h:
 
@@ -151,8 +151,8 @@ P_Map16x16.o:  \
 
 /opt/devkitPro/libnds/include/nds/arm9/decompress.h:
 
-/home/nds/files/workspace/week10/Sound_solution/Tetris5/source/P_Graphics.h:
+/home/nds/files/workspace/project-nds/ProjectTemplate/Tetris5/source/P_Graphics.h:
 
-/home/nds/files/workspace/week10/Sound_solution/Tetris5/build/controls.h:
+/home/nds/files/workspace/project-nds/ProjectTemplate/Tetris5/build/controls.h:
 
-/home/nds/files/workspace/week10/Sound_solution/Tetris5/build/background.h:
+/home/nds/files/workspace/project-nds/ProjectTemplate/Tetris5/build/background.h:

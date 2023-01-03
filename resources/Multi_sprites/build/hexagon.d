@@ -1,0 +1,1 @@
+hexagon.o: hexagon.s

@@ -4,12 +4,12 @@
 @=======================================================================
 @
 @	ResRedBG, 256x192@8, 
-@	+ palette 256 entries, not compressed
+@	+ palette 253 entries, not compressed
 @	+ 769 tiles (t|f reduced) not compressed
 @	+ regular map (flat), not compressed, 32x24 
-@	Total size: 512 + 49216 + 1536 = 51264
+@	Total size: 506 + 49216 + 1536 = 51258
 @
-@	Time-stamp: 2022-12-16, 14:56:52
+@	Time-stamp: 2023-01-03, 19:15:21
 @	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -1864,7 +1864,7 @@ ResRedBGMap:
 
 	.section .rodata
 	.align	2
-	.global ResRedBGPal		@ 512 unsigned chars
+	.global ResRedBGPal		@ 508 unsigned chars
 ResRedBGPal:
 	.hword 0x0000,0x0010,0x0017,0x0008,0x001D,0x000C,0x0004,0x0014
 	.hword 0x0019,0x000A,0x0006,0x001B,0x0002,0x0012,0x000E,0x0016
@@ -1900,6 +1900,6 @@ ResRedBGPal:
 	.hword 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000
 	.hword 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000
 	.hword 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000
-	.hword 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000
+	.hword 0x0000,0x0000,0x0000,0x0000,0x0000
 
 @}}BLOCK(ResRedBG)

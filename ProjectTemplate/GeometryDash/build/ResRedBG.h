@@ -4,12 +4,12 @@
 //======================================================================
 //
 //	ResRedBG, 256x192@8, 
-//	+ palette 256 entries, not compressed
+//	+ palette 253 entries, not compressed
 //	+ 769 tiles (t|f reduced) not compressed
 //	+ regular map (flat), not compressed, 32x24 
-//	Total size: 512 + 49216 + 1536 = 51264
+//	Total size: 506 + 49216 + 1536 = 51258
 //
-//	Time-stamp: 2022-12-16, 14:56:52
+//	Time-stamp: 2023-01-03, 19:15:21
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -24,8 +24,8 @@ extern const unsigned int ResRedBGTiles[12304];
 #define ResRedBGMapLen 1536
 extern const unsigned short ResRedBGMap[768];
 
-#define ResRedBGPalLen 512
-extern const unsigned short ResRedBGPal[256];
+#define ResRedBGPalLen 506
+extern const unsigned short ResRedBGPal[254];
 
 #endif // GRIT_RESREDBG_H
 

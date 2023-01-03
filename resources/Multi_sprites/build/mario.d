@@ -1,0 +1,1 @@
+mario.o: mario.s
