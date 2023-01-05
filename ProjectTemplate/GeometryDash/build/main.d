@@ -48,9 +48,7 @@ main.o:  \
   /opt/devkitPro/libnds/include/nds/arm9/sprite.h \
   /opt/devkitPro/libnds/include/nds/system.h \
   /opt/devkitPro/libnds/include/nds/arm9/decompress.h \
-  /home/nds/files/workspace/project-nds/ProjectTemplate/GeometryDash/build/ResRedBG.h \
-  /home/nds/files/workspace/project-nds/ProjectTemplate/GeometryDash/source/sprite.h \
-  /home/nds/files/workspace/project-nds/ProjectTemplate/GeometryDash/build/dash.h
+  /home/nds/files/workspace/project-nds/ProjectTemplate/GeometryDash/build/ResRedBG.h
 
 /opt/devkitPro/libnds/include/nds.h:
 
@@ -149,7 +147,3 @@ main.o:  \
 /opt/devkitPro/libnds/include/nds/arm9/decompress.h:
 
 /home/nds/files/workspace/project-nds/ProjectTemplate/GeometryDash/build/ResRedBG.h:
-
-/home/nds/files/workspace/project-nds/ProjectTemplate/GeometryDash/source/sprite.h:
-
-/home/nds/files/workspace/project-nds/ProjectTemplate/GeometryDash/build/dash.h:
