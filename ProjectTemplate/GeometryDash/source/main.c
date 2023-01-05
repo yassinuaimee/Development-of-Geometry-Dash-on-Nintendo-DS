@@ -14,7 +14,7 @@
 #define	SPRITE_WIDTH	8
 #define	SPRITE_HEIGHT	8
 u16* gfx;
-
+int y; //vertical position of sprite
 
 unsigned char full[]={
 		255,255,255,255,255,255,255,255,
@@ -113,6 +113,19 @@ unsigned char empty[]={
  		 255,255,255,255,255,255,255,255,
   };
 
+
+ void ISR_TIMER0()
+ {
+ 	y++;
+ }
+
+ void configTimer0(){
+ 	TIMER_DATA(0) =TIMER_FREQ_1024(50000);
+ 	TIMER0_CR = TIMER_ENABLE|TIMER_DIV_1024|TIMER_IRQ_REQ;
+ 	irqSet(IRQ_TIMER0,&ISR_TIMER0);
+ 	irqEnable(IRQ_TIMER0);
+
+ }
 int main(void) {
 	// Activate main engine and background 3 in standard tiled mode
 	VRAM_A_CR=VRAM_ENABLE|VRAM_A_MAIN_BG;
@@ -144,6 +157,7 @@ int main(void) {
 	dmaCopy(rm,&BG_TILE_RAM(5)[160],64);//5
 	dmaCopy(rd,&BG_TILE_RAM(5)[192],64);//6
 	configureSprites();
+	configTimer0();
 //
 //////		//creating the map with obstacles
 	int row,col;
@@ -185,6 +199,7 @@ int main(void) {
 //		//	int bg1 = 0;
 //
 //		//Shifting background
+	y=104;
 	while(1)
 	{
 //	    	//Assign shift registers (they are not readable!)
@@ -193,7 +208,8 @@ int main(void) {
 //	    	//Update local variables that track the shifting
 ////	    	if(--bg0 < 0) bg0 = 255;
 //	    	if(++bg3 > 255) bg3 = 0;
-		int x = 30, y = 104;
+		int x = 30;
+
 		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
 		swiWaitForVBlank();
 		oamUpdate(&oamMain);
