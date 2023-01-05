@@ -124,8 +124,8 @@ unsigned char empty[]={
  	TIMER0_CR = TIMER_ENABLE|TIMER_DIV_1024|TIMER_IRQ_REQ;
  	irqSet(IRQ_TIMER0,&ISR_TIMER0);
  	irqEnable(IRQ_TIMER0);
-
  }
+
 int main(void) {
 	// Activate main engine and background 3 in standard tiled mode
 	VRAM_A_CR=VRAM_ENABLE|VRAM_A_MAIN_BG;
@@ -145,7 +145,7 @@ int main(void) {
 //
 	BGCTRL[2]=BG_COLOR_256 | BG_MAP_BASE(30) | BG_TILE_BASE(5) | BG_64x32;
 //	//assigning colors to palette
-	BG_PALETTE[255] = ARGB16(1,0,31,0);
+	BG_PALETTE[255] = ARGB16(1,15,0,31);
 	BG_PALETTE[254] = ARGB16(1,0,0,0);// 0 to make it transparent
 //
 //	//copying the tiles in tile ram
@@ -169,12 +169,20 @@ int main(void) {
 				if(col==13 || col==25){
 					BG_MAP_RAM(30)[row*32+col] = 4;
 				}
+				if(col==6 || col==17 || col==29){
+					BG_MAP_RAM(31)[row*32+col] = 4;
+				}
 			}
 			else if(row==15){ //center of traingle
 				if(col==12 || col==24){
 					BG_MAP_RAM(30)[row*32+col] = 3;
 					BG_MAP_RAM(30)[row*32+col+1] = 1;
 					BG_MAP_RAM(30)[row*32+col+2] = 5;
+				}
+				if(col==5 ||col==16 || col==28){
+					BG_MAP_RAM(31)[row*32+col] = 3;
+					BG_MAP_RAM(31)[row*32+col+1] = 1;
+					BG_MAP_RAM(31)[row*32+col+2] = 5;
 				}
 			}
 			else if(row==16 ){ //bottom of triangle
@@ -183,12 +191,19 @@ int main(void) {
 					BG_MAP_RAM(30)[row*32+col+1] = 1;
 					BG_MAP_RAM(30)[row*32+col+2] = 6;
 				}
+				if(col==5 ||col==16 || col==28){
+					BG_MAP_RAM(31)[row*32+col] = 2;
+					BG_MAP_RAM(31)[row*32+col+1] = 1;
+					BG_MAP_RAM(31)[row*32+col+2] = 6;
+				}
 			}
 			else if(row>16){ //horizontal bar at the bottom
 				BG_MAP_RAM(30)[row*32+col] = 1;
+				BG_MAP_RAM(31)[row*32+col] = 1;
 			}
 				else{ //assigning anything else to transparent
 					BG_MAP_RAM(30)[row*32+col] = 0;
+					BG_MAP_RAM(31)[row*32+col] = 0;
 				}
 
 		}
@@ -197,6 +212,7 @@ int main(void) {
 		//Local variables to track the shifting
 		int bg3 = 0;
 //		int bg1 = 0;
+		int bg2=0;
 
 		//Shifting background
 	y=104;
@@ -205,9 +221,13 @@ int main(void) {
 	    //Assign shift registers (they are not readable!)
 		REG_BG3HOFS = bg3;
 //	    REG_BG1HOFS = bg1;
+		REG_BG2HOFS = bg2;
 		//Update local variables that track the shifting
 //	    if(--bg0 < 0) bg0 = 255;
-	    if(++bg3 > 255) bg3 = 0;
+		bg3+=2;
+	    if(bg3 > 255) bg3 = 0;
+
+	    if(++bg2 > 511) bg2 = 0;
 		int x = 30;
 
 		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
