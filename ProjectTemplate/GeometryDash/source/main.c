@@ -14,7 +14,9 @@
 #define	SPRITE_WIDTH	8
 #define	SPRITE_HEIGHT	8
 u16* gfx;
-int y; //vertical position of sprite
+int y; //vertical position of sprite,
+int tim=10;//timer counter
+bool jump;
 
 unsigned char full[]={
 		255,255,255,255,255,255,255,255,
@@ -115,12 +117,43 @@ unsigned char empty[]={
 
 
  void ISR_TIMER0()
- {
- 	y++;
- }
+  {
+  	tim++;
+  	switch (tim){
+  		 case 1:
+  			 y=y-16;
+  			 break;
+  		 case 2:
+  			 y=y-10;
+  			 break;
+  		 case 3:
+  			 y=y-5;
+  		 	 break;
+  		 case 4:
+  			 y=y-3;
+  			 break;
+  		 case 5:
+  			 break;
+  		 case 6:
+  			 y=y+3;
+  			 break;
+  		 case 7:
+  		 	y=y+5;
+  		 	break;
+  		 case 8:
+  			y=y+10;
+  		 	break;
+  		 case 9:
+  			y=y+16;
+  		 	break;
+  		 default:
+  			jump=0;
+  		 }
+
+  }
 
  void configTimer0(){
- 	TIMER_DATA(0) =TIMER_FREQ_1024(50000);
+ 	TIMER_DATA(0) =TIMER_FREQ_1024(10);
  	TIMER0_CR = TIMER_ENABLE|TIMER_DIV_1024|TIMER_IRQ_REQ;
  	irqSet(IRQ_TIMER0,&ISR_TIMER0);
  	irqEnable(IRQ_TIMER0);
@@ -209,13 +242,14 @@ int main(void) {
 		}
 	}
 
-		//Local variables to track the shifting
+		//Local  variables to track the shifting
 		int bg3 = 0;
 //		int bg1 = 0;
 		int bg2=0;
 
 		//Shifting background
 	y=104;
+	jump=0;
 	while(1)
 	{
 	    //Assign shift registers (they are not readable!)
@@ -229,7 +263,13 @@ int main(void) {
 
 	    if(++bg2 > 511) bg2 = 0;
 		int x = 30;
-
+		int keys;
+		scanKeys();
+		keys = keysDown();
+		if(keys & KEY_UP){
+			if (jump!=1)tim=0;
+			else jump=1;
+		}
 		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
 		swiWaitForVBlank();
 		oamUpdate(&oamMain);
