@@ -195,19 +195,19 @@ int main(void) {
 	}
 
 		//Local variables to track the shifting
-//		int bg3 = 0;
-//		//	int bg1 = 0;
-//
-//		//Shifting background
+		int bg3 = 0;
+//		int bg1 = 0;
+
+		//Shifting background
 	y=104;
 	while(1)
 	{
-//	    	//Assign shift registers (they are not readable!)
-//	    	REG_BG3HOFS = bg3;
-////	    	REG_BG1HOFS = bg1;
-//	    	//Update local variables that track the shifting
-////	    	if(--bg0 < 0) bg0 = 255;
-//	    	if(++bg3 > 255) bg3 = 0;
+	    //Assign shift registers (they are not readable!)
+		REG_BG3HOFS = bg3;
+//	    REG_BG1HOFS = bg1;
+		//Update local variables that track the shifting
+//	    if(--bg0 < 0) bg0 = 255;
+	    if(++bg3 > 255) bg3 = 0;
 		int x = 30;
 
 		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
