@@ -6,6 +6,14 @@
 #include <nds.h>
 #include <stdio.h>
 #include "ResRedBG.h"
+#include "sprite.h"
+
+#define SCREEN_WIDTH	256
+#define	SCREEN_HEIGHT	192
+
+#define	SPRITE_WIDTH	8
+#define	SPRITE_HEIGHT	8
+u16* gfx;
 
 
 unsigned char full[]={
@@ -106,7 +114,6 @@ unsigned char empty[]={
   };
 
 int main(void) {
-
 	// Activate main engine and background 3 in standard tiled mode
 	VRAM_A_CR=VRAM_ENABLE|VRAM_A_MAIN_BG;
 	REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
@@ -136,6 +143,7 @@ int main(void) {
 	dmaCopy(um,&BG_TILE_RAM(5)[128],64);//4
 	dmaCopy(rm,&BG_TILE_RAM(5)[160],64);//5
 	dmaCopy(rd,&BG_TILE_RAM(5)[192],64);//6
+	configureSprites();
 //
 //////		//creating the map with obstacles
 	int row,col;
@@ -177,16 +185,19 @@ int main(void) {
 //		//	int bg1 = 0;
 //
 //		//Shifting background
-//	    while(1) {
+	while(1)
+	{
 //	    	//Assign shift registers (they are not readable!)
 //	    	REG_BG3HOFS = bg3;
 ////	    	REG_BG1HOFS = bg1;
 //	    	//Update local variables that track the shifting
 ////	    	if(--bg0 < 0) bg0 = 255;
 //	    	if(++bg3 > 255) bg3 = 0;
-//	        swiWaitForVBlank();
-//	    }
-
+		int x = 30, y = 104;
+		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
+		swiWaitForVBlank();
+		oamUpdate(&oamMain);
+	}
 
 //    consoleDemoInit();
 //    printf("\nTemplate nds\n");
