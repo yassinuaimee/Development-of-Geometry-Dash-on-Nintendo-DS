@@ -15,18 +15,38 @@
 #define	SPRITE_HEIGHT	8
 u16* gfx;
 int y; //vertical position of sprite,
-int tim=10;//timer counter
-bool jump;
+int tim=13;//timer counter
+bool jump=0;
 
 unsigned char full[]={
 		255,255,255,255,255,255,255,255,
 		255,255,255,255,255,255,255,255,
-		255,255,255,255,255,255,255,255,
+		255,255,255,255,255,255,255, 255,
 		255,255,255,255,255,255,255,255,
 		255,255,255,255,255,255,255,255,
 		255,255,255,255,255,255,255,255,
 		255,255,255,255,255,255,255,255,
 		255,255,255,255,255,255,255,255
+};
+unsigned char otherfull[]={
+		3,3,3,3,3,3,3,3,
+		3,3,3,3,3,3,3,3,
+		3,3,3,3,3,3,3,3,
+		3,3,3,3,3,3,3,3,
+		3,3,3,3,3,3,3,3,
+		3,3,3,3,3,3,3,3,
+		3,3,3,3,3,3,3,3,
+		3,3,3,3,3,3,3,3
+};
+unsigned char otherfullmore[]={
+		2,2,2,2,2,2,2,2,
+		2,2,2,2,2,2,2,2,
+		2,2,2,2,2,2,2,2,
+		2,2,2,2,2,2,2,2,
+		2,2,2,2,2,2,2,2,
+		2,2,2,2,2,2,2,2,
+		2,2,2,2,2,2,2,2,
+		2,2,2,2,2,2,2,2
 };
 // unsigned char empty[]={
 //		 254,254,254,254,254,254,254,254,
@@ -121,31 +141,37 @@ unsigned char empty[]={
   	tim++;
   	switch (tim){
   		 case 1:
-  			 y=y-16;
+  			 y=90;
   			 break;
   		 case 2:
-  			 y=y-10;
+  			 y=80;
   			 break;
   		 case 3:
-  			 y=y-5;
+  			 y=74;
   		 	 break;
   		 case 4:
-  			 y=y-3;
+  			 y=71;
   			 break;
   		 case 5:
+  			 y=70;
   			 break;
   		 case 6:
-  			 y=y+3;
   			 break;
   		 case 7:
-  		 	y=y+5;
+  		 	y=71;
   		 	break;
   		 case 8:
-  			y=y+10;
+  			y=74;
   		 	break;
   		 case 9:
-  			y=y+16;
+  			y=80;
   		 	break;
+  		 case 10:
+  			 y=90;
+  			 break;
+  		 case 11:
+  			 y=104;
+  			 break;
   		 default:
   			jump=0;
   		 }
@@ -158,8 +184,50 @@ unsigned char empty[]={
  	irqSet(IRQ_TIMER0,&ISR_TIMER0);
  	irqEnable(IRQ_TIMER0);
  }
+ void collision(){
+	 if(((BG_MAP_RAM(30)[352+4]== 2)||(BG_MAP_RAM(30)[352+4]== 5)||(BG_MAP_RAM(30)[352+5]== 2)||(BG_MAP_RAM(30)[352+5]== 5))&&(y>80)) BG_PALETTE_SUB[255]=ARGB16(1,0,31,1);
+	 if(((BG_MAP_RAM(30)[384+4]== 2)||(BG_MAP_RAM(30)[384+4]== 5)||(BG_MAP_RAM(30)[384+5]== 2)||(BG_MAP_RAM(30)[384+5]== 5))&&(y>80)) BG_PALETTE_SUB[255]=ARGB16(1,0,31,1);
+	 if(((BG_MAP_RAM(30)[320+4]== 2)||(BG_MAP_RAM(30)[320+4]== 5)||(BG_MAP_RAM(30)[320+5]== 2)||(BG_MAP_RAM(30)[320+5]== 5))&&(y>80)) BG_PALETTE_SUB[255]=ARGB16(1,0,31,1);
+ }
+
+void configSub(){
+	VRAM_C_CR=VRAM_ENABLE|VRAM_C_SUB_BG;
+	REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
+	BGCTRL_SUB[0] =BG_32x32|BG_COLOR_256|BG_MAP_BASE(0) | BG_TILE_BASE(1);
+	dmaCopy(full, &BG_TILE_RAM_SUB(1)[0], 64);
+	dmaCopy(otherfull,&BG_TILE_RAM_SUB(1)[32], 64);
+	dmaCopy(otherfullmore,&BG_TILE_RAM_SUB(1)[64], 64);
+	BG_PALETTE_SUB[255]=ARGB16(1,20,3,5);
+	BG_PALETTE_SUB[3]=ARGB16(1,22,5,7);
+	BG_PALETTE_SUB[2]=ARGB16(1,15,31,0);
+	int row,col, prod;
+		for(row=0;row<24;row++)
+		{
+			for(col=0;col<32;col++){
+				//BG_MAP_RAM_SUB(1)[row*32+col]=1;
+				prod=(row-12)*(row-12)+(col-16)*(col-16);
+				if((prod<5)||((prod<32)&&(prod>20))||((prod<70)&&(prod>55))||((prod<120)&&(prod>100))||((prod<180)&&(prod>160))||((prod<250)&&(prod>230))||((prod<350)&&(prod>320))){
+						BG_MAP_RAM_SUB(0)[row*32+col]=1;
+				}
+				else{
+						BG_MAP_RAM_SUB(0)[row*32+col]=0;
+
+				}
+			}}
+
+		for(row=10;row<13;row++){
+			for(col=9;col<22;col++){
+				if((row=10)&&((col==10)||(col==12)||(col==14)||(col==16)||(col==17)||(col==18)||(col==20)||(col==21)))BG_MAP_RAM_SUB(0)[row*32+col]=2;
+				if((row=11)&&((col==10)||(col==12)||(col==14)||(col==16)||(col==18)||(col==20)||(col==21)))BG_MAP_RAM_SUB(0)[row*32+col]=2;
+				if((row=12)&&((col==9)||(col==10)||(col==12)||(col==13)||(col==14)||(col==16)||(col==18)||(col==20)))BG_MAP_RAM_SUB(0)[row*32+col]=2;
+
+			}
+		}
+	};
+
 
 int main(void) {
+	configSub();
 	// Activate main engine and background 3 in standard tiled mode
 	VRAM_A_CR=VRAM_ENABLE|VRAM_A_MAIN_BG;
 	REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
@@ -191,7 +259,7 @@ int main(void) {
 	dmaCopy(rd,&BG_TILE_RAM(5)[192],64);//6
 	configureSprites();
 	configTimer0();
-//
+
 //////		//creating the map with obstacles
 	int row,col;
 
@@ -252,6 +320,20 @@ int main(void) {
 	jump=0;
 	while(1)
 	{
+		collision();
+		if(tim%20==0){
+			BG_PALETTE_SUB[3]=ARGB16(1,22,5,7);
+		}
+		if(tim%20==5){
+			BG_PALETTE_SUB[3]=ARGB16(1,20,6,7);
+		}
+
+		if(tim%20==10){
+			BG_PALETTE_SUB[3]=ARGB16(1,22,8,5);
+		}
+		if(tim%20==15){
+			BG_PALETTE_SUB[3]=ARGB16(1,22,5,1);
+		}
 	    //Assign shift registers (they are not readable!)
 		REG_BG3HOFS = bg3;
 //	    REG_BG1HOFS = bg1;
@@ -266,10 +348,12 @@ int main(void) {
 		int keys;
 		scanKeys();
 		keys = keysDown();
-		if(keys & KEY_UP){
-			if (jump!=1)tim=0;
-			else jump=1;
+		if((keys & KEY_UP)&&(!jump)){
+			tim=0;
+			jump=1;
 		}
+		if(jump)BG_PALETTE_SUB[2]=ARGB16(1,0,31,1);
+		else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);
 		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
 		swiWaitForVBlank();
 		oamUpdate(&oamMain);
