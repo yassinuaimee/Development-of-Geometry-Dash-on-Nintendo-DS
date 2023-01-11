@@ -740,6 +740,7 @@ int main(void) {
 			}
 		}
 
+
 		else if(bg2==511 && c2==1){
 			for(row=0; row<24;row++){
 				for(col=0;col<32;col++){
