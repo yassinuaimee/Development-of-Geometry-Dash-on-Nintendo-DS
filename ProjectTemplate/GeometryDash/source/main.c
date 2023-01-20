@@ -8,9 +8,9 @@
 #include "ResRedBG.h"
 #include "sprite.h"
 
-//#include <maxmod9.h>
-//#include "soundbank.h"
-//#include "soundbank_bin.h"
+#include <maxmod9.h>
+#include "soundbank.h"
+#include "soundbank_bin.h"
 
 #define SCREEN_WIDTH	256
 #define	SCREEN_HEIGHT	192
@@ -273,19 +273,42 @@ unsigned char full_obst[]={
 	 	int detc;
 	 	for(detc=6;detc<9;detc++){
 	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>76))return 1;
+	 		//if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>66))return 1;
 	 	}
 	 	return 0;
 	 }
-//		for(xi=8;xi<32;xi++){
-//			if(BG_MAP_RAM(30)[480+xi]== 7) BG_PALETTE_SUB[254]=ARGB16(1,0,31,31);
-//		 }
-	// if(((BG_MAP_RAM(30)[320+4]== 2)||(BG_MAP_RAM(30)[320+4]== 5)||(BG_MAP_RAM(30)[320+5]== 2)||(BG_MAP_RAM(30)[320+5]== 5))&&(y>80)) BG_PALETTE_SUB[255]=ARGB16(1,0,31,1);
 
+ void configbackgrundloser(){
+
+	 BGCTRL_SUB[0] =BG_32x32|BG_COLOR_256|BG_MAP_BASE(1) | BG_TILE_BASE(1);
+
+	 if(1);//enable loose
+	 else;//retourner palette
+		int row,col;
+			for(row=0;row<24;row++)
+			{
+				for(col=0;col<32;col++){
+					//BG_MAP_RAM_SUB(1)[row*32+col]=1;
+					BG_MAP_RAM_SUB(1)[row*32+col]=0;
+
+				}}
+
+			for(row=10;row<13;row++){
+						for(col=9;col<23;col++){
+							if((row=10)&&((col==9)||(col==12)||(col==13)||(col==14)||(col==16)||(col==17)||(col==18)||(col==21)||(col==22)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+							if((row=11)&&((col==9)||(col==12)||(col==14)||(col==16)||(col==18)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+							if((row=12)&&((col==9)||(col==10)||(col==12)||(col==17)||(col==13)||(col==14)||(col==16)||(col==18)||(col==21)||(col==20)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+
+						}
+					}
+
+ }
 
 void configSub(){
 	VRAM_C_CR=VRAM_ENABLE|VRAM_C_SUB_BG;
-	REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
-	BGCTRL_SUB[0] =BG_32x32|BG_COLOR_256|BG_MAP_BASE(0) | BG_TILE_BASE(1);
+	REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG1_ACTIVE;//
+	BGCTRL_SUB[1] =BG_32x32|BG_COLOR_256|BG_MAP_BASE(0) | BG_TILE_BASE(1);
+
 	dmaCopy(full, &BG_TILE_RAM_SUB(1)[0], 64);
 	dmaCopy(otherfull,&BG_TILE_RAM_SUB(1)[32], 64);
 	dmaCopy(otherfullmore,&BG_TILE_RAM_SUB(1)[64], 64);
@@ -374,10 +397,25 @@ void DrawMap(){
 //    if(++bg2 > 511) bg2 = 0;
 //}
 
+void blinkeffect(){
+	if(tim%20==0){
+				BG_PALETTE_SUB[3]=ARGB16(1,22,5,7);
+			}
+			if(tim%20==5){
+				BG_PALETTE_SUB[3]=ARGB16(1,20,6,7);
+			}
+
+			if(tim%20==10){
+				BG_PALETTE_SUB[3]=ARGB16(1,22,8,5);
+			}
+			if(tim%20==15){
+				BG_PALETTE_SUB[3]=ARGB16(1,22,5,1);
+			}
+}
 int main(void) {
 
 //	//Init the sound library
-	//mmInitDefaultMem((mm_addr)soundbank_bin);
+	mmInitDefaultMem((mm_addr)soundbank_bin);
 //	//Load module
 	mmLoad(MOD_MUSIC);
 	mmStart(MOD_MUSIC,MM_PLAY_LOOP);
@@ -387,6 +425,8 @@ int main(void) {
 	ConfigureBG3();
 	ConfigureBG2();
 	configureSprites();
+	configbackgrundloser();
+
 	configTimer0();
 //	DrawMap();
 	//creating the map with obstacles
@@ -574,20 +614,10 @@ int main(void) {
 	{
 
 
-		if(collision())REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE;
-		if(tim%20==0){
-			BG_PALETTE_SUB[3]=ARGB16(1,22,5,7);
-		}
-		if(tim%20==5){
-			BG_PALETTE_SUB[3]=ARGB16(1,20,6,7);
-		}
-
-		if(tim%20==10){
-			BG_PALETTE_SUB[3]=ARGB16(1,22,8,5);
-		}
-		if(tim%20==15){
-			BG_PALETTE_SUB[3]=ARGB16(1,22,5,1);
-		}
+		if(collision())
+			{BG_PALETTE_SUB[2]=ARGB16(1,0,0,0);
+			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;}
+		blinkeffect();//on l'appelle que si on a pas perdu
 	    //Assign shift registers (they are not readable!)
 //		ShiftBG3(bg3);
 		REG_BG3HOFS = bg3;
@@ -790,15 +820,15 @@ int main(void) {
 			tim=0;
 			jump=1;
 		}
-		if(keys & KEY_DOWN){
-			tim=0;
-			jump=1;
-			bg2=0;
-			REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
-			configureSprites();
-		}
+//		if(keys & KEY_DOWN){
+//			tim=0;
+//			jump=1;
+//			bg2=0;
+//			REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
+//			configureSprites();
+//		}
 		if(jump)BG_PALETTE_SUB[2]=ARGB16(1,0,31,1);
-		else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);
+		//else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);
 		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
 		swiWaitForVBlank();
 		oamUpdate(&oamMain);
