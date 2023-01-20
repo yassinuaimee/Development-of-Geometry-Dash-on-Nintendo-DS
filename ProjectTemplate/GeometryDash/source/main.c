@@ -345,7 +345,8 @@ int main(void) {
 //	//Init the sound library
 	mmInitDefaultMem((mm_addr)soundbank_bin);
 //	//Load module
-//	mmLoad(MOD_EYE_OF_THE_TIGER);
+	mmLoad(MOD_MUSIC);
+	mmStart(MOD_MUSIC,MM_PLAY_LOOP);
 
 	configSub();
 	ActivateMain();
@@ -535,7 +536,7 @@ int main(void) {
 	jump=0;
 	while(1)
 	{
-//		mmStart(MOD_EYE_OF_THE_TIGER,MM_PLAY_LOOP);
+
 
 		collision();
 		if(tim%20==0){
