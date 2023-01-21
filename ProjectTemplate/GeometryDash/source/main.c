@@ -8,9 +8,9 @@
 #include "ResRedBG.h"
 #include "sprite.h"
 
-//#include <maxmod9.h>
-//#include "soundbank.h"
-//#include "soundbank_bin.h"
+#include <maxmod9.h>
+#include "soundbank.h"
+#include "soundbank_bin.h"
 
 #define SCREEN_WIDTH	256
 #define	SCREEN_HEIGHT	192
@@ -377,7 +377,7 @@ void DrawMap(){
 int main(void) {
 
 //	//Init the sound library
-	//mmInitDefaultMem((mm_addr)soundbank_bin);
+	mmInitDefaultMem((mm_addr)soundbank_bin);
 //	//Load module
 	mmLoad(MOD_MUSIC);
 	mmStart(MOD_MUSIC,MM_PLAY_LOOP);
