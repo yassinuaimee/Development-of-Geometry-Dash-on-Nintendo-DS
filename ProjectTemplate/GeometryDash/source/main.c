@@ -22,6 +22,8 @@ int y; //vertical position of sprite,
 int tim;//timer counter
 bool jump=0;
 int bg2=0;
+int playsfx=0;
+
 
 unsigned char full[]={
 		254,254,254,254,254,254,254,254,
@@ -272,7 +274,10 @@ unsigned char full_obst[]={
 	 	int shift=(int)bg2/8;
 	 	int detc;
 	 	for(detc=6;detc<9;detc++){
-	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>76))return 1;
+	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>76)) {
+	 			playsfx+=1;
+	 			return 1;
+	 		}
 	 		//if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>66))return 1;
 	 	}
 	 	return 0;
@@ -386,6 +391,12 @@ void InitMap(){
 
 	int row,col;
 	//map1
+	for(row=0; row<24;row++){
+		for(col=0;col<32;col++){
+			BG_MAP_RAM(30)[row*32+col] = 0;
+			BG_MAP_RAM(31)[row*32+col] = 0;
+		}
+	}
 	for(row=0; row<24;row++){
 		for(col=0;col<32;col++){
 
@@ -632,10 +643,10 @@ void ChangeMap1(int c1,int c2){
 //    if(bg3 > 255) bg3 = 0;
 //}							//shifting does not work when in function
 //
-void ShiftBG2(int bg2){
-	REG_BG2HOFS = bg2;
-    if(++bg2 > 511) bg2 = 0;
-}
+//void ShiftBG2(int bg2){
+//	REG_BG2HOFS = bg2;
+//    if(++bg2 > 511) bg2 = 0;
+//}
 
 void blinkeffect(){
 	if(tim%20==0){
@@ -659,6 +670,8 @@ int main(void) {
 //	//Load module
 	mmLoad(MOD_MUSIC);
 	mmStart(MOD_MUSIC,MM_PLAY_LOOP);
+	mmLoadEffect(SFX_RESULT);
+	mmLoadEffect(SFX_LASER);
 
 	configSub();
 	ActivateMain();
@@ -673,10 +686,8 @@ int main(void) {
 
 
 	//Local  variables to track the shifting
-	int bg3 = 0;
+	int bg3=0,c1=0,c2=0,lost=0;
 //	int bg1 = 0;
-	//int bg2=0;
-	int c1=0,c2=0;
 
 	//Shifting background
 	y=104;
@@ -685,19 +696,29 @@ int main(void) {
 	{
 
 
-		if(collision())
-			{BG_PALETTE_SUB[2]=ARGB16(1,0,0,0);
-			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;}
+		if(collision()){
+			BG_PALETTE_SUB[2]=ARGB16(1,0,0,0);
+			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
+			lost=1;
+			if(playsfx<7){
+				mmEffect(SFX_RESULT);
+			}
+			mmStop();
+		}
 		blinkeffect();//on l'appelle que si on a pas perdu
 	    //Assign shift registers (they are not readable!)
 //		ShiftBG3(bg3);
 		REG_BG3HOFS = bg3;
-		bg3+=2;
-	    if(bg3 > 255) bg3 = 0;
+		REG_BG2HOFS = bg2;
+		if(lost==0){
+			bg3+=2;
+		    if(bg3 > 255) bg3 = 0;
+		    if(++bg2 > 511) bg2 = 0;
+		}
 
 //		ShiftBG2(bg2);
-		REG_BG2HOFS = bg2;
-		if(++bg2 > 511) bg2 = 0;
+
+
 		if(bg2==255){
 			c1+=1;
 			c1=c1%2;
@@ -716,9 +737,22 @@ int main(void) {
 		int keys;
 		scanKeys();
 		keys = keysDown();
-		if(((keys & KEY_UP)||(keys & KEY_TOUCH))&&(!jump)){
+		if(((keys & KEY_UP)||(keys & KEY_TOUCH))&&(!jump)&& lost==0){
+			int i;
+			for(i=0;i<7;i++){
+				mmEffect(SFX_LASER);
+			}
 			tim=0;
 			jump=1;
+		}
+		else if((keys & KEY_START) && lost==1){
+			lost=0;
+			bg2=0;
+			bg3=0;
+			playsfx=0;
+			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG1_ACTIVE;
+			InitMap();
+			mmStart(MOD_MUSIC,MM_PLAY_LOOP);
 		}
 //		if(keys & KEY_DOWN){
 //			tim=0;
