@@ -382,7 +382,247 @@ void ConfigureBG2(){
 
 }
 
-void DrawMap(){
+void InitMap(){
+
+	int row,col;
+	//map1
+	for(row=0; row<24;row++){
+		for(col=0;col<32;col++){
+
+			if(row==14){	//top of the triangle
+				if(col==25){
+					BG_MAP_RAM(30)[row*32+col] = 4;
+				}
+				if(col==6 || col==16 || col== 29){
+					BG_MAP_RAM(31)[row*32+col] = 4;
+				}
+			}
+			else if(row==15){ //center of traingle
+				if(col==24){
+					BG_MAP_RAM(30)[row*32+col] = 3;
+					BG_MAP_RAM(30)[row*32+col+1] = 7;
+					BG_MAP_RAM(30)[row*32+col+2] = 5;
+
+				}
+				if(col==5 || col==15 || col== 28){
+					BG_MAP_RAM(31)[row*32+col] = 3;
+					BG_MAP_RAM(31)[row*32+col+1] = 7;
+					BG_MAP_RAM(31)[row*32+col+2] = 5;
+					if (col==15){
+						BG_MAP_RAM(31)[row*32+col+3] = 3;
+						BG_MAP_RAM(31)[row*32+col+4] = 5;
+					}
+				}
+			}
+			else if(row==16 ){ //bottom of triangle
+				if(col==24){
+					BG_MAP_RAM(30)[row*32+col] = 2;
+					BG_MAP_RAM(30)[row*32+col+1] = 7;
+					BG_MAP_RAM(30)[row*32+col+2] = 6;
+				}
+				if(col==5 || col==15 || col== 28 ){
+					BG_MAP_RAM(31)[row*32+col] = 2;
+					BG_MAP_RAM(31)[row*32+col+1] = 7;
+					BG_MAP_RAM(31)[row*32+col+2] = 6;
+					if (col==15){
+						BG_MAP_RAM(31)[row*32+col+3] = 2;
+						BG_MAP_RAM(31)[row*32+col+4] = 6;
+					}
+				}
+			}
+			else if(row>16){ //horizontal bar at the bottom
+				BG_MAP_RAM(30)[row*32+col] = 1;
+				BG_MAP_RAM(31)[row*32+col] = 1;
+			}
+			else{ //assigning anything else to transparent
+				BG_MAP_RAM(30)[row*32+col] = 0;
+				BG_MAP_RAM(31)[row*32+col] = 0;
+			}
+
+		}
+	}
+
+}
+
+void ChangeMap1(int c1,int c2){
+	int row,col;
+
+	if(bg2==255 && c1==0){
+
+		for(row=0; row<24;row++){
+			for(col=0;col<32;col++){
+				BG_MAP_RAM(30)[row*32+col] = 0;
+			}
+		}
+		for(row=0; row<24;row++){
+			for(col=0;col<32;col++){
+
+				if(row==14){	//top of the triangle
+					if(col==10||col==20){
+						BG_MAP_RAM(30)[row*32+col] = 4;
+					}
+
+				}
+				else if(row==15){ //center of traingle
+					if(col==9||col==19){
+						BG_MAP_RAM(30)[row*32+col] = 3;
+						BG_MAP_RAM(30)[row*32+col+1] = 7;
+						BG_MAP_RAM(30)[row*32+col+2] = 5;
+						if (col==19){
+							BG_MAP_RAM(30)[row*32+col+3] = 3;
+							BG_MAP_RAM(30)[row*32+col+4] = 5;
+						}
+					}
+				}
+				else if(row==16 ){ //bottom of triangle
+					if(col==9||col==19){
+						BG_MAP_RAM(30)[row*32+col] = 2;
+						BG_MAP_RAM(30)[row*32+col+1] = 7;
+						BG_MAP_RAM(30)[row*32+col+2] = 6;
+						if (col==19){
+							BG_MAP_RAM(30)[row*32+col+3] = 2;
+							BG_MAP_RAM(30)[row*32+col+4] = 6;
+						}
+					}
+				}
+				else if(row>16){ //horizontal bar at the bottom
+					BG_MAP_RAM(30)[row*32+col] = 1;
+				}
+				else{ //assigning anything else to transparent
+					BG_MAP_RAM(30)[row*32+col] = 0;
+				}
+			}
+		}
+	}
+	else if(bg2==255 && c1==1){
+
+		for(row=0; row<24;row++){
+			for(col=0;col<32;col++){
+				BG_MAP_RAM(30)[row*32+col] = 0;
+			}
+		}
+		for(row=0; row<24;row++){
+			for(col=0;col<32;col++){
+
+				if(row==14){	//top of the triangle
+					if(col==10||col==20){
+						BG_MAP_RAM(30)[row*32+col] = 4;
+					}
+
+				}
+				else if(row==15){ //center of traingle
+					if(col==9||col==19){
+						BG_MAP_RAM(30)[row*32+col] = 3;
+						BG_MAP_RAM(30)[row*32+col+1] = 7;
+						BG_MAP_RAM(30)[row*32+col+2] = 5;
+						if (col==19){
+							BG_MAP_RAM(30)[row*32+col+3] = 3;
+							BG_MAP_RAM(30)[row*32+col+4] = 5;
+						}
+					}
+				}
+				else if(row==16 ){ //bottom of triangle
+					if(col==9||col==19){
+						BG_MAP_RAM(30)[row*32+col] = 2;
+						BG_MAP_RAM(30)[row*32+col+1] = 7;
+						BG_MAP_RAM(30)[row*32+col+2] = 6;
+						if (col==19){
+							BG_MAP_RAM(30)[row*32+col+3] = 2;
+							BG_MAP_RAM(30)[row*32+col+4] = 6;
+						}
+					}
+				}
+				else if(row>16){ //horizontal bar at the bottom
+					BG_MAP_RAM(30)[row*32+col] = 1;
+				}
+				else{ //assigning anything else to transparent
+					BG_MAP_RAM(30)[row*32+col] = 0;
+				}
+			}
+		}
+	}
+	else if(bg2==511 && c2==0){
+		for(row=0; row<24;row++){
+			for(col=0;col<32;col++){
+				BG_MAP_RAM(31)[row*32+col] = 0;
+			}
+		}
+		for(row=0; row<24;row++){
+			for(col=0;col<32;col++){
+
+				if(row==14){	//top of the triangle
+					if(col==10 || col==25){
+						BG_MAP_RAM(31)[row*32+col] = 4;
+					}
+				}
+				else if(row==15){ //center of traingle
+					if(col==9 || col==24 ){
+						BG_MAP_RAM(31)[row*32+col] = 3;
+						BG_MAP_RAM(31)[row*32+col+1] = 7;
+						BG_MAP_RAM(31)[row*32+col+2] = 5;
+						BG_MAP_RAM(31)[row*32+col+3] = 3;
+						BG_MAP_RAM(31)[row*32+col+4] = 5;
+					}
+				}
+				else if(row==16 ){ //bottom of triangle
+					if(col==9  || col==24 ){
+						BG_MAP_RAM(31)[row*32+col] = 2;
+						BG_MAP_RAM(31)[row*32+col+1] = 7;
+						BG_MAP_RAM(31)[row*32+col+2] = 6;
+						BG_MAP_RAM(31)[row*32+col+3] = 2;
+						BG_MAP_RAM(31)[row*32+col+4] = 6;
+
+					}
+				}
+				else if(row>16){ //horizontal bar at the bottom
+					BG_MAP_RAM(31)[row*32+col] = 1;
+				}
+				else{ //assigning anything else to transparent
+					BG_MAP_RAM(31)[row*32+col] = 0;
+				}
+
+			}
+		}
+	}
+	else if(bg2==511 && c2==1){
+		for(row=0; row<24;row++){
+			for(col=0;col<32;col++){
+				BG_MAP_RAM(31)[row*32+col] = 0;
+			}
+		}
+		for(row=0; row<24;row++){
+			for(col=0;col<32;col++){
+
+				if(row==14){	//top of the triangle
+					if(col==7 || col==17 || col==28){
+						BG_MAP_RAM(31)[row*32+col] = 4;
+					}
+				}
+				else if(row==15){ //center of traingle
+					if(col==6 || col==16 || col==27){
+						BG_MAP_RAM(31)[row*32+col] = 3;
+						BG_MAP_RAM(31)[row*32+col+1] = 7;
+						BG_MAP_RAM(31)[row*32+col+2] = 5;
+
+					}
+				}
+				else if(row==16 ){ //bottom of triangle
+					if(col==6 || col==16 || col==27){
+						BG_MAP_RAM(31)[row*32+col] = 2;
+						BG_MAP_RAM(31)[row*32+col+1] = 7;
+						BG_MAP_RAM(31)[row*32+col+2] = 6;
+					}
+				}
+				else if(row>16){ //horizontal bar at the bottom
+					BG_MAP_RAM(31)[row*32+col] = 1;
+				}
+				else{ //assigning anything else to transparent
+					BG_MAP_RAM(31)[row*32+col] = 0;
+				}
+
+			}
+		}
+	}
 
 }
 
@@ -392,10 +632,10 @@ void DrawMap(){
 //    if(bg3 > 255) bg3 = 0;
 //}							//shifting does not work when in function
 //
-//void ShiftBG2(int bg2){
-//	REG_BG2HOFS = bg2;
-//    if(++bg2 > 511) bg2 = 0;
-//}
+void ShiftBG2(int bg2){
+	REG_BG2HOFS = bg2;
+    if(++bg2 > 511) bg2 = 0;
+}
 
 void blinkeffect(){
 	if(tim%20==0){
@@ -428,178 +668,9 @@ int main(void) {
 	configbackgrundloser();
 
 	configTimer0();
-//	DrawMap();
-	//creating the map with obstacles
 
-	int row,col;
-	//map1
-//	for(row=0; row<24;row++){
-//		for(col=0;col<32;col++){
-//
-//			if(row==14){	//top of the triangle
-//				if(col==13 || col==25){
-//					BG_MAP_RAM(30)[row*32+col] = 4;
-//				}
-//				if(col==6 || col==24){
-//					BG_MAP_RAM(31)[row*32+col] = 4;
-//				}
-//			}
-//			else if(row==15){ //center of traingle
-//				if(col==12 || col==24){
-//					BG_MAP_RAM(30)[row*32+col] = 3;
-//					BG_MAP_RAM(30)[row*32+col+1] = 7;
-//					BG_MAP_RAM(30)[row*32+col+2] = 5;
-//
-//				}
-//				if(col==5 || col==23 ){
-//					BG_MAP_RAM(31)[row*32+col] = 3;
-//					BG_MAP_RAM(31)[row*32+col+1] = 7;
-//					BG_MAP_RAM(31)[row*32+col+2] = 5;
-//					if (col==5){
-//						BG_MAP_RAM(31)[row*32+col+3] = 3;
-//						BG_MAP_RAM(31)[row*32+col+4] = 5;
-//					}
-//				}
-//			}
-//			else if(row==16 ){ //bottom of triangle
-//				if(col==12 || col==24){
-//					BG_MAP_RAM(30)[row*32+col] = 2;
-//					BG_MAP_RAM(30)[row*32+col+1] = 7;
-//					BG_MAP_RAM(30)[row*32+col+2] = 6;
-//				}
-//				if(col==5  || col==23 ){
-//					BG_MAP_RAM(31)[row*32+col] = 2;
-//					BG_MAP_RAM(31)[row*32+col+1] = 7;
-//					BG_MAP_RAM(31)[row*32+col+2] = 6;
-//					if (col==5){
-//						BG_MAP_RAM(31)[row*32+col+3] = 2;
-//						BG_MAP_RAM(31)[row*32+col+4] = 6;
-//					}
-//				}
-//			}
-//			else if(row>16){ //horizontal bar at the bottom
-//				BG_MAP_RAM(30)[row*32+col] = 1;
-//				BG_MAP_RAM(31)[row*32+col] = 1;
-//			}
-//			else{ //assigning anything else to transparent
-//				BG_MAP_RAM(30)[row*32+col] = 0;
-//				BG_MAP_RAM(31)[row*32+col] = 0;
-//			}
-//
-//		}
-//	}
+	InitMap(); 	//creating the map with obstacles
 
-	//test map
-	for(row=0; row<24;row++){
-		for(col=0;col<32;col++){
-
-			if(row==14){	//top of the triangle
-				if(col==13 || col==25){
-					BG_MAP_RAM(30)[row*32+col] = 4;
-				}
-				if(col==10 || col==24){
-					BG_MAP_RAM(31)[row*32+col] = 4;
-				}
-			}
-			else if(row==15){ //center of traingle
-				if(col==12 || col==24){
-					BG_MAP_RAM(30)[row*32+col] = 3;
-					BG_MAP_RAM(30)[row*32+col+1] = 7;
-					BG_MAP_RAM(30)[row*32+col+2] = 5;
-
-				}
-				if(col==9 || col==23 ){
-					BG_MAP_RAM(31)[row*32+col] = 3;
-					BG_MAP_RAM(31)[row*32+col+1] = 7;
-					BG_MAP_RAM(31)[row*32+col+2] = 5;
-					if (col==9){
-						BG_MAP_RAM(31)[row*32+col+3] = 3;
-						BG_MAP_RAM(31)[row*32+col+4] = 5;
-					}
-				}
-			}
-			else if(row==16 ){ //bottom of triangle
-				if(col==12 || col==24){
-					BG_MAP_RAM(30)[row*32+col] = 2;
-					BG_MAP_RAM(30)[row*32+col+1] = 7;
-					BG_MAP_RAM(30)[row*32+col+2] = 6;
-				}
-				if(col==9  || col==23 ){
-					BG_MAP_RAM(31)[row*32+col] = 2;
-					BG_MAP_RAM(31)[row*32+col+1] = 7;
-					BG_MAP_RAM(31)[row*32+col+2] = 6;
-					if (col==9){
-						BG_MAP_RAM(31)[row*32+col+3] = 2;
-						BG_MAP_RAM(31)[row*32+col+4] = 6;
-					}
-				}
-			}
-			else if(row>16){ //horizontal bar at the bottom
-				BG_MAP_RAM(30)[row*32+col] = 1;
-				BG_MAP_RAM(31)[row*32+col] = 1;
-			}
-			else{ //assigning anything else to transparent
-				BG_MAP_RAM(30)[row*32+col] = 0;
-				BG_MAP_RAM(31)[row*32+col] = 0;
-			}
-
-		}
-	}
-
-	//map with tall triangle
-//	for(row=0; row<24;row++){
-//		for(col=0;col<32;col++){
-//
-//			if(row==13){	//top of the triangle
-//				if(col==7 ){
-//					BG_MAP_RAM(30)[row*32+col] = 4;
-//				}
-//			}
-//			else if(row==14){ //center of triangle
-//				if(col==6 ){
-//					BG_MAP_RAM(30)[row*32+col] = 3;
-//					BG_MAP_RAM(30)[row*32+col+1] = 7;
-//					BG_MAP_RAM(30)[row*32+col+2] = 5;
-//				}
-//				else if(col==21){
-//					BG_MAP_RAM(30)[row*32+col] = 4;
-//				}
-//			}
-//			else if(row==15 ){ //bottom of triangle
-//				if(col==6){
-//					BG_MAP_RAM(30)[row*32+col] = 2;
-//					BG_MAP_RAM(30)[row*32+col+1] = 7;
-//					BG_MAP_RAM(30)[row*32+col+2] = 6;
-//				}
-//				else if(col==20){
-//					BG_MAP_RAM(30)[row*32+col] = 3;
-//					BG_MAP_RAM(30)[row*32+col+1] = 7;
-//					BG_MAP_RAM(30)[row*32+col+2] = 5;
-//					BG_MAP_RAM(30)[row*32+col+3] = 3;
-//					BG_MAP_RAM(30)[row*32+col+4] = 5;
-//				}
-//			}
-//			else if(row==16){
-//				if(col>5 && col<9){
-//					BG_MAP_RAM(30)[row*32+col] = 7;
-//				}
-//				if(col==20){
-//					BG_MAP_RAM(30)[row*32+col] = 2;
-//					BG_MAP_RAM(30)[row*32+col+1] = 7;
-//					BG_MAP_RAM(30)[row*32+col+2] = 6;
-//					BG_MAP_RAM(30)[row*32+col+3] = 2;
-//					BG_MAP_RAM(30)[row*32+col+4] = 6;
-//				}
-//			}
-//			else if(row>16){ //horizontal bar at the bottom
-//				BG_MAP_RAM(30)[row*32+col] = 1;
-//			}
-//			else{ //assigning anything else to transparent
-//				BG_MAP_RAM(30)[row*32+col] = 0;
-//			}
-//
-//		}
-//	}
 
 	//Local  variables to track the shifting
 	int bg3 = 0;
@@ -624,6 +695,7 @@ int main(void) {
 		bg3+=2;
 	    if(bg3 > 255) bg3 = 0;
 
+//		ShiftBG2(bg2);
 		REG_BG2HOFS = bg2;
 		if(++bg2 > 511) bg2 = 0;
 		if(bg2==255){
@@ -634,183 +706,11 @@ int main(void) {
 			c2+=1;
 			c2=c2%2;
 		}
-//		ShiftBG2(bg2);
 
 //	    REG_BG1HOFS = bg1;
 		//Update local variables that track the shifting
 //	    if(--bg0 < 0) bg0 = 255;
-
-
-		if(bg2==255 && c1==0){
-
-			for(row=0; row<24;row++){
-				for(col=0;col<32;col++){
-					BG_MAP_RAM(30)[row*32+col] = 0;
-				}
-			}
-
-
-			for(row=0; row<24;row++){
-				for(col=0;col<32;col++){
-
-					if(row==14){	//top of the triangle
-						if(col==13 ){
-							BG_MAP_RAM(30)[row*32+col] = 4;
-						}
-					}
-					else if(row==15){ //center of triangle
-						if(col==12 ){
-							BG_MAP_RAM(30)[row*32+col] = 3;
-							BG_MAP_RAM(30)[row*32+col+1] = 7;
-							BG_MAP_RAM(30)[row*32+col+2] = 5;
-
-						}
-					}
-					else if(row==16 ){ //bottom of triangle
-						if(col==12 ){
-							BG_MAP_RAM(30)[row*32+col] = 2;
-							BG_MAP_RAM(30)[row*32+col+1] = 7;
-							BG_MAP_RAM(30)[row*32+col+2] = 6;
-						}
-					}
-					else if(row>16){ //horizontal bar at the bottom
-						BG_MAP_RAM(30)[row*32+col] = 1;
-					}
-					else{ //assigning anything else to transparent
-						BG_MAP_RAM(30)[row*32+col] = 0;
-					}
-
-				}
-			}
-		}
-
-		else if(bg2==255 && c1==1){
-			for(row=0; row<24;row++){
-				for(col=0;col<32;col++){
-					BG_MAP_RAM(30)[row*32+col] = 0;
-				}
-			}
-			for(row=0; row<24;row++){
-				for(col=0;col<32;col++){
-
-					if(row==14){	//top of the triangle
-						if(col==7 ){
-							BG_MAP_RAM(30)[row*32+col] = 4;
-						}
-					}
-					else if(row==15){ //center of traingle
-						if(col==6 ){
-							BG_MAP_RAM(30)[row*32+col] = 3;
-							BG_MAP_RAM(30)[row*32+col+1] = 7;
-							BG_MAP_RAM(30)[row*32+col+2] = 5;
-
-						}
-					}
-					else if(row==16 ){ //bottom of triangle
-						if(col==6 ){
-							BG_MAP_RAM(30)[row*32+col] = 2;
-							BG_MAP_RAM(30)[row*32+col+1] = 7;
-							BG_MAP_RAM(30)[row*32+col+2] = 6;
-						}
-					}
-					else if(row>16){ //horizontal bar at the bottom
-						BG_MAP_RAM(30)[row*32+col] = 1;
-					}
-					else{ //assigning anything else to transparent
-						BG_MAP_RAM(30)[row*32+col] = 0;
-					}
-
-				}
-			}
-		}
-
-		else if(bg2==511 && c2==0){
-			for(row=0; row<24;row++){
-				for(col=0;col<32;col++){
-					BG_MAP_RAM(31)[row*32+col] = 0;
-				}
-			}
-			for(row=0; row<24;row++){
-				for(col=0;col<32;col++){
-
-					if(row==14){	//top of the triangle
-						if(col==10 || col==24){
-							BG_MAP_RAM(31)[row*32+col] = 4;
-						}
-					}
-					else if(row==15){ //center of traingle
-						if(col==9 || col==23 ){
-							BG_MAP_RAM(31)[row*32+col] = 3;
-							BG_MAP_RAM(31)[row*32+col+1] = 7;
-							BG_MAP_RAM(31)[row*32+col+2] = 5;
-							if (col==9){
-								BG_MAP_RAM(31)[row*32+col+3] = 3;
-								BG_MAP_RAM(31)[row*32+col+4] = 5;
-							}
-						}
-					}
-					else if(row==16 ){ //bottom of triangle
-						if(col==9  || col==23 ){
-							BG_MAP_RAM(31)[row*32+col] = 2;
-							BG_MAP_RAM(31)[row*32+col+1] = 7;
-							BG_MAP_RAM(31)[row*32+col+2] = 6;
-							if (col==9){
-								BG_MAP_RAM(31)[row*32+col+3] = 2;
-								BG_MAP_RAM(31)[row*32+col+4] = 6;
-							}
-						}
-					}
-					else if(row>16){ //horizontal bar at the bottom
-						BG_MAP_RAM(31)[row*32+col] = 1;
-					}
-					else{ //assigning anything else to transparent
-						BG_MAP_RAM(31)[row*32+col] = 0;
-					}
-
-				}
-			}
-		}
-
-
-		else if(bg2==511 && c2==1){
-			for(row=0; row<24;row++){
-				for(col=0;col<32;col++){
-					BG_MAP_RAM(31)[row*32+col] = 0;
-				}
-			}
-			for(row=0; row<24;row++){
-				for(col=0;col<32;col++){
-
-					if(row==14){	//top of the triangle
-						if(col==23 ){
-							BG_MAP_RAM(31)[row*32+col] = 4;
-						}
-					}
-					else if(row==15){ //center of traingle
-						if(col==22){
-							BG_MAP_RAM(31)[row*32+col] = 3;
-							BG_MAP_RAM(31)[row*32+col+1] = 7;
-							BG_MAP_RAM(31)[row*32+col+2] = 5;
-
-						}
-					}
-					else if(row==16 ){ //bottom of triangle
-						if(col==22){
-							BG_MAP_RAM(31)[row*32+col] = 2;
-							BG_MAP_RAM(31)[row*32+col+1] = 7;
-							BG_MAP_RAM(31)[row*32+col+2] = 6;
-						}
-					}
-					else if(row>16){ //horizontal bar at the bottom
-						BG_MAP_RAM(31)[row*32+col] = 1;
-					}
-					else{ //assigning anything else to transparent
-						BG_MAP_RAM(31)[row*32+col] = 0;
-					}
-
-				}
-			}
-		}
+		ChangeMap1(c1,c2);
 
 		int x = 32;
 		int keys;
