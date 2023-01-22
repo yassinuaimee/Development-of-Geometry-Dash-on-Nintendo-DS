@@ -299,7 +299,7 @@ unsigned char full_obst[]={
 	 			playsfx+=1;
 	 			return 1;
 	 			}
-	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 3))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 3))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 3))))&&(y>76)){
+	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 8))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 8))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 8))))&&(y>80)){
 	 			playsfx+=1;
 	 			return 1;
 	 			}
@@ -746,7 +746,7 @@ int main(void) {
 	mmStart(MOD_MUSIC,MM_PLAY_LOOP);
 	mmLoadEffect(SFX_RESULT);
 	mmLoadEffect(SFX_LASER);
-	mmLoadEffect(SFX_FART);
+//	mmLoadEffect(SFX_FART);
 
 
 	configSub();
@@ -777,7 +777,7 @@ int main(void) {
 			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
 			lost=1;
 			if(playsfx<4){
-				mmEffect(SFX_FART);
+				mmEffect(SFX_RESULT);
 			}
 			BG_PALETTE_SUB[254]=ARGB16(1,0,0,0);
 			BG_PALETTE_SUB[2]=ARGB16(1,31,0,0);
