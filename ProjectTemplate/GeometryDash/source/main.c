@@ -179,11 +179,11 @@ unsigned char full_obst[]={
  void ISR_TIMER0()
   {
   	tim++;
-  	switch (tim){
+  	switch (tim){// on utilise l'ISR principalement pour faire le saut, le deplacement vertical du sprite
   		 case 1:
   			 y=90;
   			 break;
-  		 case 2:
+  		 case 2:// le decalage pas lineaire de y se fait pour donner une sensation de gravité
   			 y=83;
   			 break;
   		 case 3:
@@ -236,9 +236,9 @@ unsigned char full_obst[]={
  }
 
 
- int collision(){
-	 	int shift=(int)bg2/8;
-	 	int detc;
+ int collision(){//on fait pas vraiment une detection de collision mais on cheque si on a un obstacle dans la position horizontal du sprite et on impose une hauteur minimale
+	 	int shift=(int)bg2/8;//le deplacement du background ne change pas la memoire, en fonction du deplacement faut chequer une endroit memoire ou un autre
+	 	int detc;//pour chequer plusieurs endroits dans l'horizontale
 	 	for(detc=6;detc<8;detc++){
 	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>76)) {
 	 			playsfx+=1;
@@ -257,23 +257,19 @@ unsigned char full_obst[]={
  void configbackgrundloser(){
 
 	 BGCTRL_SUB[0] =BG_32x32|BG_COLOR_256|BG_MAP_BASE(1) | BG_TILE_BASE(1);
-
-	 if(1);//enable loose
-	 else;//retourner palette
-		int row,col;
-			for(row=0;row<24;row++)
-			{
-				for(col=0;col<32;col++){
-					//BG_MAP_RAM_SUB(1)[row*32+col]=1;
-					BG_MAP_RAM_SUB(1)[row*32+col]=0;
+	int row,col;
+	for(row=0;row<24;row++)
+		{
+			for(col=0;col<32;col++){
+				BG_MAP_RAM_SUB(1)[row*32+col]=0;//on remplit le background
 
 				}}
 
 			for(row=10;row<13;row++){
-						for(col=9;col<23;col++){
-							if((row=10)&&((col==9)||(col==12)||(col==13)||(col==14)||(col==17)||(col==18)||(col==20)||(col==21)||(col==22)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
-							if((row=11)&&((col==9)||(col==12)||(col==14)||(col==17)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
-							if((row=12)&&((col==9)||(col==10)||(col==12)||(col==17)||(col==13)||(col==14)||(col==16)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+				for(col=9;col<23;col++){//on ecrive le message lost
+					if((row=10)&&((col==9)||(col==12)||(col==13)||(col==14)||(col==17)||(col==18)||(col==20)||(col==21)||(col==22)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+					if((row=11)&&((col==9)||(col==12)||(col==14)||(col==17)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+					if((row=12)&&((col==9)||(col==10)||(col==12)||(col==17)||(col==13)||(col==14)||(col==16)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
 
 						}
 					}
@@ -295,19 +291,18 @@ void configSub(){
 		for(row=0;row<24;row++)
 		{
 			for(col=0;col<32;col++){
-				//BG_MAP_RAM_SUB(1)[row*32+col]=1;
 				prod=(row-12)*(row-12)+(col-16)*(col-16);
 				if((prod<5)||((prod<32)&&(prod>20))||((prod<70)&&(prod>55))||((prod<120)&&(prod>100))||((prod<180)&&(prod>160))||((prod<250)&&(prod>230))||((prod<350)&&(prod>320))){
-						BG_MAP_RAM_SUB(0)[row*32+col]=1;
+						BG_MAP_RAM_SUB(0)[row*32+col]=1;// on cree un patter agreable, des "cercles" qui vont changer de couleur
 				}
 				else{
-						BG_MAP_RAM_SUB(0)[row*32+col]=0;
+						BG_MAP_RAM_SUB(0)[row*32+col]=0;//on rempli le rest du background
 
 				}
 			}}
 
 		for(row=10;row<13;row++){
-			for(col=9;col<22;col++){
+			for(col=9;col<22;col++){//on ecrive le message jump
 				if((row=10)&&((col==10)||(col==12)||(col==14)||(col==16)||(col==17)||(col==18)||(col==20)||(col==21)))BG_MAP_RAM_SUB(0)[row*32+col]=2;
 				if((row=11)&&((col==10)||(col==12)||(col==14)||(col==16)||(col==18)||(col==20)||(col==21)))BG_MAP_RAM_SUB(0)[row*32+col]=2;
 				if((row=12)&&((col==9)||(col==10)||(col==12)||(col==13)||(col==14)||(col==16)||(col==18)||(col==20)))BG_MAP_RAM_SUB(0)[row*32+col]=2;
@@ -653,29 +648,20 @@ void ChangeMap1(int c1,int c2){
 
 }
 
-//void ShiftBG3(int bg3){
-//	REG_BG3HOFS = bg3;
-//	bg3+=2;
-//    if(bg3 > 255) bg3 = 0;
-//}							//shifting does not work when in function
-//
-//void ShiftBG2(int bg2){
-//	REG_BG2HOFS = bg2;
-//    if(++bg2 > 511) bg2 = 0;
-//}
 
-void blinkeffect(){
-	if(tim%20==0){
-				BG_PALETTE_SUB[3]=ARGB16(1,22,5,7);
+
+void blinkeffect(){// en fonction de la variable incremente dans l'ISR on chosi un couleur, ça pourrait s'inclure dans l'isr
+	if(tim%20==0){//vu que l'isr incremente tim dix fois par segonde, on changera de couleur chaque 0.5 segondes, le fait que le saut reinitialise a 0 le compteur fait que la majorite du temps on regarde le premier couleur
+				BG_PALETTE_SUB[3]=ARGB16(1,22,5,7);//les quatre sont des couleurs assez similaires pour que ça soit plus agreable
 			}
-			if(tim%20==5){
+	if(tim%20==5){
 				BG_PALETTE_SUB[3]=ARGB16(1,20,6,7);
 			}
 
-			if(tim%20==10){
+	if(tim%20==10){
 				BG_PALETTE_SUB[3]=ARGB16(1,22,8,5);
 			}
-			if(tim%20==15){
+	if(tim%20==15){
 				BG_PALETTE_SUB[3]=ARGB16(1,22,5,1);
 			}
 }
@@ -710,7 +696,7 @@ int main(void) {
 	//local variable to end and restart the game
 	int lost=0;
 
-	y=104;
+	y=104;//position verticale du sprite par defaut, juste au dessus de la ligne orange dans le background
 	jump=0;
 
 
@@ -719,20 +705,19 @@ int main(void) {
 
 	while(1)
 	{
-		if(collision()){
+		if(collision()){//on fait un appel a la fonction que detecte si notre sprite touche un obstacle
 
-			BG_PALETTE_SUB[2]=ARGB16(1,0,0,0);
 			//activate the losing background with losing message
 			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
-			lost=1;
+			lost=1;// la fonction collision se met a un que pendant un moment court, ce variable nous permet de tenir l'etat lost
 			if(playsfx<4){ //if we lose we play the sound effect
 				mmEffect(SFX_RESULT);
 			}
-			BG_PALETTE_SUB[254]=ARGB16(1,0,0,0);
-			BG_PALETTE_SUB[2]=ARGB16(1,31,0,0);
+			BG_PALETTE_SUB[254]=ARGB16(1,0,0,0);//pour le sub on a reutilise des tiles dans differents backgrounds, normalement c rouge avec la possibilite de vert
+			BG_PALETTE_SUB[2]=ARGB16(1,31,0,0);// quand on perd on veut fond noire, dans la ligne en haut et message en rouge dans cette ligne
 			mmStop(); //stop module music
 		}
-		blinkeffect();//on l'appelle que si on a pas perdu
+		blinkeffect();
 
 		//Assign shift registers (they are not readable!)
 		REG_BG3HOFS = bg3;
@@ -757,7 +742,7 @@ int main(void) {
 
 		ChangeMap1(c1,c2);
 
-		int x = 32;
+		int x = 32;//position fixe horizontale du sprite
 
 		//identifying the keys and mapping different actions
 		int keys;
@@ -771,8 +756,8 @@ int main(void) {
 			for(i=0;i<7;i++){
 				mmEffect(SFX_LASER);
 			}
-			tim=0;
-			jump=1;
+			tim=0;//pour rentrer dans le switch de l'ISR
+			jump=1;//pour ne pas permettre re rentrer dans l'interruption si on est deja dedans
 		}//we restart the game when we have lost and pressed on start button
 		else if((keys & KEY_START) && lost==1){
 			//resetting all variables to initial conditions
@@ -786,20 +771,14 @@ int main(void) {
 			InitMap();
 			//starting thhe music again
 			mmStart(MOD_MUSIC,MM_PLAY_LOOP);
-			BG_PALETTE_SUB[254]=ARGB16(1,20,3,5);
+			BG_PALETTE_SUB[254]=ARGB16(1,20,3,5);//on remet les couleurs de jeu dans la palette du sub
 			BG_PALETTE_SUB[2]=ARGB16(1,15,31,0);
 		}
 
-//		if(keys & KEY_DOWN){
-//			tim=0;
-//			jump=1;
-//			bg2=0;
-//			REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
-//			configureSprites();
-//		}
 
-		if(jump)BG_PALETTE_SUB[2]=ARGB16(1,0,31,1);
-		else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);
+
+		if(jump)BG_PALETTE_SUB[2]=ARGB16(1,0,31,1);//pour que le message jump soit visible
+		else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);// pour que le message jump soit pas visible, meme couleur que le background
 		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
 		swiWaitForVBlank();
 		oamUpdate(&oamMain);
