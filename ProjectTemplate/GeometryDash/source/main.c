@@ -251,30 +251,32 @@ unsigned char full_obst[]={
   			 y=72;
   			 break;
   		 case 6:
-  			 y=70;
   			 break;
   		 case 7:
-  		 	y=68;
+  		 	y=71;
   		 	break;
   		 case 8:
   			y=70;
   		 	break;
   		 case 9:
-  			y=72;
+  			y=71;
   		 	break;
   		 case 10:
-  			 y=74;
+  			 y=72;
   			 break;
   		 case 11:
-  			 y=76;
+  			 y=74;
   			 break;
   		case 12:
-  		  	 y=83;
-  		  	 break;
+  			y=76;
+  		  	break;
   		case 13:
-  		  	 y=90;
+  			y=83;
   		  	break;
   		case 14:
+  			y=90;
+  		  	break;
+  		case 15:
   		  	y=104;
   		  	break;
   		 default:
@@ -294,18 +296,13 @@ unsigned char full_obst[]={
  int collision(){
 	 	int shift=(int)bg2/8;
 	 	int detc;
-	 	for(detc=6;detc<8;detc++){
+	 	for(detc=6;detc<9;detc++){
 	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>76)) {
 	 			playsfx+=1;
 	 			return 1;
-	 			}
-	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 3))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 3))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 3))))&&(y>76)){
-	 			playsfx+=1;
-	 			return 1;
-	 			}
-
 	 		}
-
+	 		//if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>66))return 1;
+	 	}
 	 	return 0;
 	 }
 
@@ -326,9 +323,9 @@ unsigned char full_obst[]={
 
 			for(row=10;row<13;row++){
 						for(col=9;col<23;col++){
-							if((row=10)&&((col==9)||(col==12)||(col==13)||(col==14)||(col==17)||(col==18)||(col==20)||(col==21)||(col==22)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
-							if((row=11)&&((col==9)||(col==12)||(col==14)||(col==17)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
-							if((row=12)&&((col==9)||(col==10)||(col==12)||(col==17)||(col==13)||(col==14)||(col==16)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+							if((row=10)&&((col==9)||(col==12)||(col==13)||(col==14)||(col==16)||(col==17)||(col==18)||(col==21)||(col==22)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+							if((row=11)&&((col==9)||(col==12)||(col==14)||(col==16)||(col==18)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+							if((row=12)&&((col==9)||(col==10)||(col==12)||(col==17)||(col==13)||(col==14)||(col==16)||(col==18)||(col==21)||(col==20)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
 
 						}
 					}
@@ -770,87 +767,85 @@ int main(void) {
 	jump=0;
 	while(1)
 	{
-
-
-		if(collision()){
-			BG_PALETTE_SUB[2]=ARGB16(1,0,0,0);
-			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
-			lost=1;
-			if(playsfx<4){
-				mmEffect(SFX_FART);
-			}
-			BG_PALETTE_SUB[254]=ARGB16(1,0,0,0);
-			BG_PALETTE_SUB[2]=ARGB16(1,31,0,0);
-			mmStop();
-		}
-		blinkeffect();//on l'appelle que si on a pas perdu
-	    //Assign shift registers (they are not readable!)
-//		ShiftBG3(bg3);
-		REG_BG3HOFS = bg3;
-		REG_BG2HOFS = bg2;
-		if(lost==0){
-			bg3+=2;
-		    if(bg3 > 255) bg3 = 0;
-		    if(++bg2 > 511) bg2 = 0;
-		}
-
-//		ShiftBG2(bg2);
-
-
-		if(bg2==255){
-			c1+=1;
-			c1=c1%2;
-		}
-		if(bg2==511){
-			c2+=1;
-			c2=c2%2;
-		}
-
-//	    REG_BG1HOFS = bg1;
-		//Update local variables that track the shifting
-//	    if(--bg0 < 0) bg0 = 255;
-		ChangeMap1(c1,c2);
-
-		int x = 32;
 		int keys;
 		scanKeys();
-		keys = keysDown();
-		if(((keys & KEY_UP)||(keys & KEY_TOUCH))&&(!jump)&& lost==0){
-			int i;
-			for(i=0;i<7;i++){
-				mmEffect(SFX_LASER);
+//		if((keys & KEY_START)&& lost==0){
+
+			if(collision()){
+				BG_PALETTE_SUB[2]=ARGB16(1,0,0,0);
+				REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
+				lost=1;
+				if(playsfx<4){
+					mmEffect(SFX_FART);
+				}
+				mmStop();
 			}
-			tim=0;
-			jump=1;
+			blinkeffect();//on l'appelle que si on a pas perdu
+			//Assign shift registers (they are not readable!)
+	//		ShiftBG3(bg3);
+			REG_BG3HOFS = bg3;
+			REG_BG2HOFS = bg2;
+			if(lost==0){
+				bg3+=2;
+				if(bg3 > 255) bg3 = 0;
+				if(++bg2 > 511) bg2 = 0;
+			}
+
+	//		ShiftBG2(bg2);
+
+
+			if(bg2==255){
+				c1+=1;
+				c1=c1%2;
+			}
+			if(bg2==511){
+				c2+=1;
+				c2=c2%2;
+			}
+
+	//	    REG_BG1HOFS = bg1;
+			//Update local variables that track the shifting
+	//	    if(--bg0 < 0) bg0 = 255;
+			ChangeMap1(c1,c2);
+
+			int x = 32;
+
+			keys = keysDown();
+			if(((keys & KEY_UP)||(keys & KEY_TOUCH))&&(!jump)&& lost==0){
+				int i;
+				for(i=0;i<7;i++){
+					mmEffect(SFX_LASER);
+				}
+				tim=0;
+				jump=1;
+			}
+			else if((keys & KEY_START) && lost==1){
+				lost=0;
+				bg2=0;
+				bg3=0;
+				playsfx=0;
+				REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG1_ACTIVE;
+				InitMap();
+				mmStart(MOD_MUSIC,MM_PLAY_LOOP);
+			}
+	//		if(keys & KEY_DOWN){
+	//			tim=0;
+	//			jump=1;
+	//			bg2=0;
+	//			REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
+	//			configureSprites();
+	//		}
+			if(jump)BG_PALETTE_SUB[2]=ARGB16(1,0,31,1);
+			//else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);
+			oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
+			swiWaitForVBlank();
+			oamUpdate(&oamMain);
 		}
-		else if((keys & KEY_START) && lost==1){
-			lost=0;
-			bg2=0;
-			bg3=0;
-			playsfx=0;
-			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG1_ACTIVE;
-			InitMap();
-			mmStart(MOD_MUSIC,MM_PLAY_LOOP);
-			BG_PALETTE_SUB[254]=ARGB16(1,20,3,5);
-			BG_PALETTE_SUB[2]=ARGB16(1,15,31,0);
-		}
-//		if(keys & KEY_DOWN){
-//			tim=0;
-//			jump=1;
-//			bg2=0;
-//			REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
-//			configureSprites();
-//		}
-		if(jump)BG_PALETTE_SUB[2]=ARGB16(1,0,31,1);
-		//else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);
-		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
-		swiWaitForVBlank();
-		oamUpdate(&oamMain);
 	}
 
 //    consoleDemoInit();
 //    printf("\nTemplate nds\n");
-}
+//}
 
 
 
