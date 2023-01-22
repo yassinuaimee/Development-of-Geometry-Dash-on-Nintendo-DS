@@ -77,7 +77,7 @@ unsigned char empty[]={
 		0,0,0,0,0,0,0,0
  };
 
- unsigned char ld[]={
+ unsigned char ld[]={ //ld for left down
 		 0,0,0,0,255,255,255,255,
 		 0,0,0,255,255,255,255,255,
 		 0,0,255,255,255,255,255,255,
@@ -88,7 +88,7 @@ unsigned char empty[]={
 		 255,255,255,255,255,255,255,255
  };
 
- unsigned char lm[]={
+ unsigned char lm[]={ //lm for left middle
 		 0,0,0,0,0,0,0,0,
 		 0,0,0,0,0,0,0,0,
 		 0,0,0,0,0,0,0,255,
@@ -99,7 +99,7 @@ unsigned char empty[]={
 		 0,0,0,0,255,255,255,255
  };
 
- unsigned char um[]={
+ unsigned char um[]={ //upper middle
 		 0,0,0,0,0,0,0,0,
 		 0,0,0,0,0,0,0,0,
 		 0,0,0,0,0,0,0,0,
@@ -130,7 +130,7 @@ unsigned char full_obst[]={
 // 		3,3,3,3,3,3,3,3
 // };
 
- unsigned char rm[]={
+ unsigned char rm[]={ //right middle
 
 		 0,0,0,0,0,0,0,0,
 		 0,0,0,0,0,0,0,0,
@@ -142,7 +142,7 @@ unsigned char full_obst[]={
 		 255,255,255,255,0,0,0,0,
  };
 
- unsigned char rd[]={
+ unsigned char rd[]={ //right down
  		 255,255,255,255,0,0,0,0,
  		 255,255,255,255,255,0,0,0,
  		 255,255,255,255,255,255,0,0,
@@ -153,7 +153,7 @@ unsigned char full_obst[]={
  		 255,255,255,255,255,255,255,255,
   };
 
- unsigned char lm2[]={
+ unsigned char lm2[]={  //for the small trianagle
 		 0,0,0,0,0,0,0,0,
 		 0,0,0,0,0,0,0,0,
 		 0,0,0,0,0,0,0,255,
@@ -164,7 +164,7 @@ unsigned char full_obst[]={
 		 0,0,0,0,255,255,255,255
  };
 
- unsigned char rm2[]={
+ unsigned char rm2[]={ //same
 
 		 0,0,0,0,0,0,0,0,
 		 0,0,0,0,0,0,0,0,
@@ -175,61 +175,6 @@ unsigned char full_obst[]={
 		 255,255,255,0,0,0,0,0,
 		 255,255,255,255,0,0,0,0,
  };
-
-// unsigned char ilu[]={
-//		 255,255,255,255,255,255,255,255,
-//		 255,255,255,255,255,255,255,255,
-//		 0,255,255,255,255,255,255,255,
-//		 0,255,255,255,255,255,255,255,
-//		 0,0,255,255,255,255,255,255,
-//		 0,0,255,255,255,255,255,255,
-//		 0,0,0,255,255,255,255,255,
-//		 0,0,0,0,255,255,255,255,
-// };
-//
-// unsigned char iru[]={
-//		 255,255,255,255,255,255,255,255,
-//		 255,255,255,255,255,255,255,255,
-//		 255,255,255,255,255,255,255,0,
-//		 255,255,255,255,255,255,255,0,
-//		 255,255,255,255,255,255,0,0,
-//		 255,255,255,255,255,255,0,0,
-//		 255,255,255,255,255,0,0,0,
-//		 255,255,255,255,0,0,0,0,
-// };
-//
-// unsigned char imd[]={
-//		 0,255,255,255,255,255,255,0,
-//		 0,255,255,255,255,255,255,0,
-//		 0,0,255,255,255,255,0,0,
-//		 0,0,255,255,255,255,0,0,
-//		 0,0,0,255,255,0,0,0,
-//		 0,0,0,0,0,0,0,0,
-//		 0,0,0,0,0,0,0,0
-// };
-//
-// unsigned char ilm[]={
-//		 0,0,0,0,255,255,255,255,
-//		 0,0,0,0,0,255,255,255,
-//		 0,0,0,0,0,255,255,255,
-//		 0,0,0,0,0,0,255,255,
-//		 0,0,0,0,0,0,255,255,
-//		 0,0,0,0,0,0,0,255,
-//		 0,0,0,0,0,0,0,0,
-//		 0,0,0,0,0,0,0,0,
-// };
-//
-// unsigned char irm[]={
-//		 255,255,255,255,0,0,0,0,
-//		 255,255,255,0,0,0,0,0,
-//		 255,255,255,0,0,0,0,0,
-//		 255,255,0,0,0,0,0,0,
-//		 255,255,0,0,0,0,0,0,
-//		 255,0,0,0,0,0,0,0,
-//		 0,0,0,0,0,0,0,0,
-//		 0,0,0,0,0,0,0,0,
-// };
-
 
  void ISR_TIMER0()
   {
@@ -407,9 +352,6 @@ void ConfigureBG2(){
 	dmaCopy(full_obst,&BG_TILE_RAM(5)[224],64);//7
 	dmaCopy(lm2,&BG_TILE_RAM(5)[256],64);//8
 	dmaCopy(rm2,&BG_TILE_RAM(5)[288],64);//9
-//	dmaCopy(imd,&BG_TILE_RAM(5)[320],64);//10
-//	dmaCopy(irm,&BG_TILE_RAM(5)[352],64);//11
-//	dmaCopy(iru,&BG_TILE_RAM(5)[384],64);//12
 
 }
 
@@ -434,7 +376,7 @@ void InitMap(){
 					BG_MAP_RAM(31)[row*32+col] = 4;
 				}
 			}
-			else if(row==15){ //center of traingle
+			else if(row==15){ //center of triangle
 				if(col==24){
 					BG_MAP_RAM(30)[row*32+col] = 3;
 					BG_MAP_RAM(30)[row*32+col+1] = 7;
@@ -485,7 +427,7 @@ void InitMap1(){
 
 	int row,col;
 	//map1
-	for(row=0; row<24;row++){
+	for(row=0; row<24;row++){ //empty the ram
 		for(col=0;col<32;col++){
 			BG_MAP_RAM(30)[row*32+col] = 0;
 			BG_MAP_RAM(31)[row*32+col] = 0;
@@ -494,7 +436,7 @@ void InitMap1(){
 	for(row=0; row<24;row++){
 		for(col=0;col<32;col++){
 
-			if(row==15){ //center of traingle
+			if(row==15){ //top of the triangle
 				if(col==22){
 					BG_MAP_RAM(30)[row*32+col+3] = 8;
 					BG_MAP_RAM(30)[row*32+col+4] = 9;
@@ -548,12 +490,12 @@ void ChangeMap1(int c1,int c2){
 					}
 
 				}
-				else if(row==15){ //center of traingle
+				else if(row==15){ //center of triangle
 					if(col==9||col==19){
 						BG_MAP_RAM(30)[row*32+col] = 3;
 						BG_MAP_RAM(30)[row*32+col+1] = 7;
 						BG_MAP_RAM(30)[row*32+col+2] = 5;
-						if (col==19){
+						if (col==19){ //for double triangle
 							BG_MAP_RAM(30)[row*32+col+3] = 8;
 							BG_MAP_RAM(30)[row*32+col+4] = 9;
 						}
@@ -564,7 +506,7 @@ void ChangeMap1(int c1,int c2){
 						BG_MAP_RAM(30)[row*32+col] = 2;
 						BG_MAP_RAM(30)[row*32+col+1] = 7;
 						BG_MAP_RAM(30)[row*32+col+2] = 6;
-						if (col==19){
+						if (col==19){ //for double triangle
 							BG_MAP_RAM(30)[row*32+col+3] = 2;
 							BG_MAP_RAM(30)[row*32+col+4] = 6;
 						}
@@ -595,12 +537,12 @@ void ChangeMap1(int c1,int c2){
 					}
 
 				}
-				else if(row==15){ //center of traingle
+				else if(row==15){ //center of triangle
 					if(col==9||col==19){
 						BG_MAP_RAM(30)[row*32+col] = 3;
 						BG_MAP_RAM(30)[row*32+col+1] = 7;
 						BG_MAP_RAM(30)[row*32+col+2] = 5;
-						if (col==19){
+						if (col==19){ //for double triangle
 							BG_MAP_RAM(30)[row*32+col+3] = 8;
 							BG_MAP_RAM(30)[row*32+col+4] = 9;
 						}
@@ -611,7 +553,7 @@ void ChangeMap1(int c1,int c2){
 						BG_MAP_RAM(30)[row*32+col] = 2;
 						BG_MAP_RAM(30)[row*32+col+1] = 7;
 						BG_MAP_RAM(30)[row*32+col+2] = 6;
-						if (col==19){
+						if (col==19){ //for double triangle
 							BG_MAP_RAM(30)[row*32+col+3] = 2;
 							BG_MAP_RAM(30)[row*32+col+4] = 6;
 						}
@@ -640,7 +582,7 @@ void ChangeMap1(int c1,int c2){
 						BG_MAP_RAM(31)[row*32+col] = 4;
 					}
 				}
-				else if(row==15){ //center of traingle
+				else if(row==15){ //center of triangle
 					if(col==9 || col==24 ){
 						BG_MAP_RAM(31)[row*32+col] = 3;
 						BG_MAP_RAM(31)[row*32+col+1] = 7;
@@ -683,7 +625,7 @@ void ChangeMap1(int c1,int c2){
 						BG_MAP_RAM(31)[row*32+col] = 4;
 					}
 				}
-				else if(row==15){ //center of traingle
+				else if(row==15){ //center of triangle
 					if(col==6 || col==16 || col==27){
 						BG_MAP_RAM(31)[row*32+col] = 3;
 						BG_MAP_RAM(31)[row*32+col+1] = 7;
@@ -744,9 +686,9 @@ int main(void) {
 //	//Load module
 	mmLoad(MOD_MUSIC);
 	mmStart(MOD_MUSIC,MM_PLAY_LOOP);
+	//load sound effects
 	mmLoadEffect(SFX_RESULT);
 	mmLoadEffect(SFX_LASER);
-//	mmLoadEffect(SFX_FART);
 
 
 	configSub();
@@ -758,14 +700,16 @@ int main(void) {
 
 	configTimer0();
 
-	InitMap1(); 	//creating the map with obstacles
+	InitMap1(); 	//creating first map with obstacles
 
 
 	//Local  variables to track the shifting
-	int bg3=0,c1=0,c2=0,lost=0,start=0;
-//	int bg1 = 0;
+	int bg3=0;
+	//local variables to change maps
+	int c1=0,c2=0;
+	//local variable to end and restart the game
+	int lost=0;
 
-	//Shifting background
 	y=104;
 	jump=0;
 
@@ -773,89 +717,94 @@ int main(void) {
 
 
 
-		while(1)
-		{
-			if(collision()){
-				start=0;
-				BG_PALETTE_SUB[2]=ARGB16(1,0,0,0);
-				REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
-				lost=1;
-				if(playsfx<4){
-					mmEffect(SFX_RESULT);
-				}
-				BG_PALETTE_SUB[254]=ARGB16(1,0,0,0);
-				BG_PALETTE_SUB[2]=ARGB16(1,31,0,0);
-				mmStop();
+	while(1)
+	{
+		if(collision()){
 
+			BG_PALETTE_SUB[2]=ARGB16(1,0,0,0);
+			//activate the losing background with losing message
+			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
+			lost=1;
+			if(playsfx<4){ //if we lose we play the sound effect
+				mmEffect(SFX_RESULT);
 			}
-			blinkeffect();//on l'appelle que si on a pas perdu
-			//Assign shift registers (they are not readable!)
-	//		ShiftBG3(bg3);
-			REG_BG3HOFS = bg3;
-			REG_BG2HOFS = bg2;
-			if(lost==0){
-				bg3+=2;
-				if(bg3 > 255) bg3 = 0;
-				if(++bg2 > 511) bg2 = 0;
-			}
-
-	//		ShiftBG2(bg2);
-
-
-			if(bg2==255){
-				c1+=1;
-				c1=c1%2;
-			}
-			if(bg2==511){
-				c2+=1;
-				c2=c2%2;
-			}
-
-	//	    REG_BG1HOFS = bg1;
-			//Update local variables that track the shifting
-	//	    if(--bg0 < 0) bg0 = 255;
-			ChangeMap1(c1,c2);
-
-			int x = 32;
-
-			int keys;
-			scanKeys();
-			keys = keysDown();
-
-			if(((keys & KEY_UP)||(keys & KEY_TOUCH))&&(!jump)&& lost==0){
-				int i;
-				for(i=0;i<7;i++){
-					mmEffect(SFX_LASER);
-				}
-				tim=0;
-				jump=1;
-			}
-			else if((keys & KEY_START) && lost==1){
-				lost=0;
-				bg2=0;
-				bg3=0;
-				playsfx=0;
-				REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG1_ACTIVE;
-				InitMap();
-				mmStart(MOD_MUSIC,MM_PLAY_LOOP);
-				BG_PALETTE_SUB[254]=ARGB16(1,20,3,5);
-				BG_PALETTE_SUB[2]=ARGB16(1,15,31,0);
-				start=1;
-			}
-	//		if(keys & KEY_DOWN){
-	//			tim=0;
-	//			jump=1;
-	//			bg2=0;
-	//			REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
-	//			configureSprites();
-	//		}
-			if(jump)BG_PALETTE_SUB[2]=ARGB16(1,0,31,1);
-			else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);
-			oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
-			swiWaitForVBlank();
-			oamUpdate(&oamMain);
+			BG_PALETTE_SUB[254]=ARGB16(1,0,0,0);
+			BG_PALETTE_SUB[2]=ARGB16(1,31,0,0);
+			mmStop(); //stop module music
 		}
+		blinkeffect();//on l'appelle que si on a pas perdu
+
+		//Assign shift registers (they are not readable!)
+		REG_BG3HOFS = bg3;
+		REG_BG2HOFS = bg2;
+
+		//Shifting backgrounds
+		if(lost==0){
+			bg3+=2;
+			if(bg3 > 255) bg3 = 0;
+			if(++bg2 > 511) bg2 = 0;
+		}
+
+		//condition to change maps when screen has ended
+		if(bg2==255){
+			c1+=1;
+			c1=c1%2;
+		}
+		if(bg2==511){
+			c2+=1;
+			c2=c2%2;
+		}
+
+		ChangeMap1(c1,c2);
+
+		int x = 32;
+
+		//identifying the keys and mapping different actions
+		int keys;
+		scanKeys();
+		keys = keysDown();
+
+		//if we press up or the touchscreen while not already jumping then
+		//we jump
+		if(((keys & KEY_UP)||(keys & KEY_TOUCH))&&(!jump)&& lost==0){
+			int i;
+			for(i=0;i<7;i++){
+				mmEffect(SFX_LASER);
+			}
+			tim=0;
+			jump=1;
+		}//we restart the game when we have lost and pressed on start button
+		else if((keys & KEY_START) && lost==1){
+			//resetting all variables to initial conditions
+			lost=0;
+			bg2=0;
+			bg3=0;
+			playsfx=0;
+			//reactivating background 1 for the sub
+			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG1_ACTIVE;
+			//reinitializing the map
+			InitMap();
+			//starting thhe music again
+			mmStart(MOD_MUSIC,MM_PLAY_LOOP);
+			BG_PALETTE_SUB[254]=ARGB16(1,20,3,5);
+			BG_PALETTE_SUB[2]=ARGB16(1,15,31,0);
+		}
+
+//		if(keys & KEY_DOWN){
+//			tim=0;
+//			jump=1;
+//			bg2=0;
+//			REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
+//			configureSprites();
+//		}
+
+		if(jump)BG_PALETTE_SUB[2]=ARGB16(1,0,31,1);
+		else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);
+		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
+		swiWaitForVBlank();
+		oamUpdate(&oamMain);
 	}
+}
 
 
 
