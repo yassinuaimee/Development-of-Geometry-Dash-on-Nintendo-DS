@@ -228,32 +228,30 @@ unsigned char full_obst[]={
   			 y=72;
   			 break;
   		 case 6:
+  			 y=70;
   			 break;
   		 case 7:
-  		 	y=71;
+  		 	y=68;
   		 	break;
   		 case 8:
   			y=70;
   		 	break;
   		 case 9:
-  			y=71;
+  			y=72;
   		 	break;
   		 case 10:
-  			 y=72;
-  			 break;
-  		 case 11:
   			 y=74;
   			 break;
+  		 case 11:
+  			 y=76;
+  			 break;
   		case 12:
-  			y=76;
-  		  	break;
+  		  	 y=83;
+  		  	 break;
   		case 13:
-  			y=83;
+  		  	 y=90;
   		  	break;
   		case 14:
-  			y=90;
-  		  	break;
-  		case 15:
   		  	y=104;
   		  	break;
   		 default:
@@ -273,13 +271,18 @@ unsigned char full_obst[]={
  int collision(){
 	 	int shift=(int)bg2/8;
 	 	int detc;
-	 	for(detc=6;detc<9;detc++){
+	 	for(detc=6;detc<8;detc++){
 	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>76)) {
 	 			playsfx+=1;
 	 			return 1;
+	 			}
+	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 3))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 3))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 3))))&&(y>76)){
+	 			playsfx+=1;
+	 			return 1;
+	 			}
+
 	 		}
-	 		//if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>66))return 1;
-	 	}
+
 	 	return 0;
 	 }
 
@@ -300,9 +303,9 @@ unsigned char full_obst[]={
 
 			for(row=10;row<13;row++){
 						for(col=9;col<23;col++){
-							if((row=10)&&((col==9)||(col==12)||(col==13)||(col==14)||(col==16)||(col==17)||(col==18)||(col==21)||(col==22)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
-							if((row=11)&&((col==9)||(col==12)||(col==14)||(col==16)||(col==18)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
-							if((row=12)&&((col==9)||(col==10)||(col==12)||(col==17)||(col==13)||(col==14)||(col==16)||(col==18)||(col==21)||(col==20)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+							if((row=10)&&((col==9)||(col==12)||(col==13)||(col==14)||(col==17)||(col==18)||(col==20)||(col==21)||(col==22)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+							if((row=11)&&((col==9)||(col==12)||(col==14)||(col==17)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
+							if((row=12)&&((col==9)||(col==10)||(col==12)||(col==17)||(col==13)||(col==14)||(col==16)||(col==21)))BG_MAP_RAM_SUB(1)[row*32+col]=2;
 
 						}
 					}
@@ -703,6 +706,8 @@ int main(void) {
 			if(playsfx<7){
 				mmEffect(SFX_RESULT);
 			}
+			BG_PALETTE_SUB[254]=ARGB16(1,0,0,0);
+			BG_PALETTE_SUB[2]=ARGB16(1,31,0,0);
 			mmStop();
 		}
 		blinkeffect();//on l'appelle que si on a pas perdu
@@ -753,6 +758,8 @@ int main(void) {
 			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG1_ACTIVE;
 			InitMap();
 			mmStart(MOD_MUSIC,MM_PLAY_LOOP);
+			BG_PALETTE_SUB[254]=ARGB16(1,20,3,5);
+			BG_PALETTE_SUB[2]=ARGB16(1,15,31,0);
 		}
 //		if(keys & KEY_DOWN){
 //			tim=0;
