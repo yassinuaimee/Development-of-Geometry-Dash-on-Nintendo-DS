@@ -446,8 +446,8 @@ void InitMap(){
 					BG_MAP_RAM(31)[row*32+col+1] = 7;
 					BG_MAP_RAM(31)[row*32+col+2] = 5;
 					if (col==15){
-						BG_MAP_RAM(31)[row*32+col+3] = 3;
-						BG_MAP_RAM(31)[row*32+col+4] = 5;
+						BG_MAP_RAM(31)[row*32+col+3] = 8;
+						BG_MAP_RAM(31)[row*32+col+4] = 9;
 					}
 				}
 			}
@@ -554,8 +554,8 @@ void ChangeMap1(int c1,int c2){
 						BG_MAP_RAM(30)[row*32+col+1] = 7;
 						BG_MAP_RAM(30)[row*32+col+2] = 5;
 						if (col==19){
-							BG_MAP_RAM(30)[row*32+col+3] = 3;
-							BG_MAP_RAM(30)[row*32+col+4] = 5;
+							BG_MAP_RAM(30)[row*32+col+3] = 8;
+							BG_MAP_RAM(30)[row*32+col+4] = 9;
 						}
 					}
 				}
@@ -601,8 +601,8 @@ void ChangeMap1(int c1,int c2){
 						BG_MAP_RAM(30)[row*32+col+1] = 7;
 						BG_MAP_RAM(30)[row*32+col+2] = 5;
 						if (col==19){
-							BG_MAP_RAM(30)[row*32+col+3] = 3;
-							BG_MAP_RAM(30)[row*32+col+4] = 5;
+							BG_MAP_RAM(30)[row*32+col+3] = 8;
+							BG_MAP_RAM(30)[row*32+col+4] = 9;
 						}
 					}
 				}
@@ -645,8 +645,8 @@ void ChangeMap1(int c1,int c2){
 						BG_MAP_RAM(31)[row*32+col] = 3;
 						BG_MAP_RAM(31)[row*32+col+1] = 7;
 						BG_MAP_RAM(31)[row*32+col+2] = 5;
-						BG_MAP_RAM(31)[row*32+col+3] = 3;
-						BG_MAP_RAM(31)[row*32+col+4] = 5;
+						BG_MAP_RAM(31)[row*32+col+3] = 8;
+						BG_MAP_RAM(31)[row*32+col+4] = 9;
 					}
 				}
 				else if(row==16 ){ //bottom of triangle
@@ -762,95 +762,101 @@ int main(void) {
 
 
 	//Local  variables to track the shifting
-	int bg3=0,c1=0,c2=0,lost=0;
+	int bg3=0,c1=0,c2=0,lost=0,start=0;
 //	int bg1 = 0;
 
 	//Shifting background
 	y=104;
 	jump=0;
-	while(1)
-	{
 
 
-		if(collision()){
-			BG_PALETTE_SUB[2]=ARGB16(1,0,0,0);
-			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
-			lost=1;
-			if(playsfx<4){
-				mmEffect(SFX_RESULT);
+
+
+
+		while(1)
+		{
+			if(collision()){
+				start=0;
+				BG_PALETTE_SUB[2]=ARGB16(1,0,0,0);
+				REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
+				lost=1;
+				if(playsfx<4){
+					mmEffect(SFX_RESULT);
+				}
+				BG_PALETTE_SUB[254]=ARGB16(1,0,0,0);
+				BG_PALETTE_SUB[2]=ARGB16(1,31,0,0);
+				mmStop();
+
 			}
-			BG_PALETTE_SUB[254]=ARGB16(1,0,0,0);
-			BG_PALETTE_SUB[2]=ARGB16(1,31,0,0);
-			mmStop();
-		}
-		blinkeffect();//on l'appelle que si on a pas perdu
-	    //Assign shift registers (they are not readable!)
-//		ShiftBG3(bg3);
-		REG_BG3HOFS = bg3;
-		REG_BG2HOFS = bg2;
-		if(lost==0){
-			bg3+=2;
-		    if(bg3 > 255) bg3 = 0;
-		    if(++bg2 > 511) bg2 = 0;
-		}
-
-//		ShiftBG2(bg2);
-
-
-		if(bg2==255){
-			c1+=1;
-			c1=c1%2;
-		}
-		if(bg2==511){
-			c2+=1;
-			c2=c2%2;
-		}
-
-//	    REG_BG1HOFS = bg1;
-		//Update local variables that track the shifting
-//	    if(--bg0 < 0) bg0 = 255;
-		ChangeMap1(c1,c2);
-
-		int x = 32;
-		int keys;
-		scanKeys();
-		keys = keysDown();
-		if(((keys & KEY_UP)||(keys & KEY_TOUCH))&&(!jump)&& lost==0){
-			int i;
-			for(i=0;i<7;i++){
-				mmEffect(SFX_LASER);
+			blinkeffect();//on l'appelle que si on a pas perdu
+			//Assign shift registers (they are not readable!)
+	//		ShiftBG3(bg3);
+			REG_BG3HOFS = bg3;
+			REG_BG2HOFS = bg2;
+			if(lost==0){
+				bg3+=2;
+				if(bg3 > 255) bg3 = 0;
+				if(++bg2 > 511) bg2 = 0;
 			}
-			tim=0;
-			jump=1;
+
+	//		ShiftBG2(bg2);
+
+
+			if(bg2==255){
+				c1+=1;
+				c1=c1%2;
+			}
+			if(bg2==511){
+				c2+=1;
+				c2=c2%2;
+			}
+
+	//	    REG_BG1HOFS = bg1;
+			//Update local variables that track the shifting
+	//	    if(--bg0 < 0) bg0 = 255;
+			ChangeMap1(c1,c2);
+
+			int x = 32;
+
+			int keys;
+			scanKeys();
+			keys = keysDown();
+
+			if(((keys & KEY_UP)||(keys & KEY_TOUCH))&&(!jump)&& lost==0){
+				int i;
+				for(i=0;i<7;i++){
+					mmEffect(SFX_LASER);
+				}
+				tim=0;
+				jump=1;
+			}
+			else if((keys & KEY_START) && lost==1){
+				lost=0;
+				bg2=0;
+				bg3=0;
+				playsfx=0;
+				REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG1_ACTIVE;
+				InitMap();
+				mmStart(MOD_MUSIC,MM_PLAY_LOOP);
+				BG_PALETTE_SUB[254]=ARGB16(1,20,3,5);
+				BG_PALETTE_SUB[2]=ARGB16(1,15,31,0);
+				start=1;
+			}
+	//		if(keys & KEY_DOWN){
+	//			tim=0;
+	//			jump=1;
+	//			bg2=0;
+	//			REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
+	//			configureSprites();
+	//		}
+			if(jump)BG_PALETTE_SUB[2]=ARGB16(1,0,31,1);
+			else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);
+			oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
+			swiWaitForVBlank();
+			oamUpdate(&oamMain);
 		}
-		else if((keys & KEY_START) && lost==1){
-			lost=0;
-			bg2=0;
-			bg3=0;
-			playsfx=0;
-			REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG1_ACTIVE;
-			InitMap();
-			mmStart(MOD_MUSIC,MM_PLAY_LOOP);
-			BG_PALETTE_SUB[254]=ARGB16(1,20,3,5);
-			BG_PALETTE_SUB[2]=ARGB16(1,15,31,0);
-		}
-//		if(keys & KEY_DOWN){
-//			tim=0;
-//			jump=1;
-//			bg2=0;
-//			REG_DISPCNT= MODE_0_2D|DISPLAY_BG3_ACTIVE|DISPLAY_BG2_ACTIVE;
-//			configureSprites();
-//		}
-		if(jump)BG_PALETTE_SUB[2]=ARGB16(1,0,31,1);
-		//else BG_PALETTE_SUB[2]=ARGB16(1,20,3,5);
-		oamSet(&oamMain,0,x, y,0,0,SpriteSize_32x32,SpriteColorFormat_256Color,gfx,-1,false,false,false, false,false);
-		swiWaitForVBlank();
-		oamUpdate(&oamMain);
 	}
 
-//    consoleDemoInit();
-//    printf("\nTemplate nds\n");
-}
 
 
 
