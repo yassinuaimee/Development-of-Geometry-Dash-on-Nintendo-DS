@@ -237,19 +237,28 @@ unsigned char full_obst[]={
 
 
  int collision(){//on fait pas vraiment une detection de collision mais on cheque si on a un obstacle dans la position horizontal du sprite et on impose une hauteur minimale
-	 	int shift=(int)bg2/8;//le deplacement du background ne change pas la memoire, en fonction du deplacement faut chequer une endroit memoire ou un autre
+	 	int shift=(int)bg2/8;//le deplacement du background ne change pas la memoire, en fonction du deplacement faut chequer un endroit memoire ou un autre
 	 	int detc;//pour chequer plusieurs endroits dans l'horizontale
 	 	for(detc=6;detc<8;detc++){
-	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 7))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 7))))&&(y>76)) {
+	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 7 ||BG_MAP_RAM(30)[480+shift+detc]== 5))||
+	 				((((bg2>(512-detc*8))&&(bg2<512)))&&
+	 						(BG_MAP_RAM(30)[480+shift+detc-32]== 7 || BG_MAP_RAM(30)[480+shift+detc-32]== 5))||
+	 						(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&
+	 								(BG_MAP_RAM(31)[480+shift+detc-32]== 7  || BG_MAP_RAM(31)[480+shift+detc-32]== 5))))
+	 								&&(y>76)) {
 	 			playsfx+=1;
 	 			return 1;
-	 			}
-	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 8))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 8))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 8))))&&(y>80)){
+			}
+	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 8 || BG_MAP_RAM(30)[480+shift+detc]== 9))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 8 || BG_MAP_RAM(30)[480+shift+detc-32]== 9))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 8 || BG_MAP_RAM(31)[480+shift+detc-32]==9))))&&(y>80)){
 	 			playsfx+=1;
 	 			return 1;
-	 			}
+			}
+//	 		if((((bg2<(256-detc*8))&&(BG_MAP_RAM(30)[480+shift+detc]== 8))||((((bg2>(512-detc*8))&&(bg2<512)))&&(BG_MAP_RAM(30)[480+shift+detc-32]== 8))||(((bg2>(256-detc*8)&&(bg2<(512-detc*8)))&&(BG_MAP_RAM(31)[480+shift+detc-32]== 8))))&&(y>80)){
+//	 			playsfx+=1;
+//	 			return 1;
+//			}
 
-	 		}
+		}
 
 	 	return 0;
 	 }
@@ -665,6 +674,10 @@ void blinkeffect(){// en fonction de la variable incremente dans l'ISR on chosi 
 				BG_PALETTE_SUB[3]=ARGB16(1,22,5,1);
 			}
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+
 int main(void) {
 
 //	//Init the sound library
@@ -784,6 +797,7 @@ int main(void) {
 		oamUpdate(&oamMain);
 	}
 }
+
 
 
 
